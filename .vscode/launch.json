@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { 
+      "name": "Launch Electron App",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/src/main.bs.js",
+      "stopOnEntry": false,
+      "args": [],
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "electron",
+      "env": { }, 
+      "sourceMaps": false
+    } 
+  ]
+}

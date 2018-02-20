@@ -1,0 +1,23 @@
+{
+  "name": "rescratch",
+  "reason": {"react-jsx" : 2},
+  "bsc-flags": ["-bs-no-version-header"],
+  "bs-dependencies": [
+    "reason-react",
+    "@glennsl/rebase",
+    "@glennsl/bs-json",
+    "vrroom",
+    "typed-glamor",
+    "bs-refmt",
+    "bs-in-a-box"
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "sources": [
+    "src"
+  ],
+  "refmt": 3
+}

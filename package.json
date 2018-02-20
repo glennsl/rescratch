@@ -1,0 +1,30 @@
+{
+  "name": "rescratch",
+  "version": "0.1.0",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "./node_modules/.bin/bsb -make-world -w",
+    "build": "./node_modules/.bin/bsb -make-world",
+    "clean": "./node_modules/.bin/bsb -clean-world",
+    "serve": "./node_modules/.bin/electron .",
+    "dev": "npm run build && npm run serve"
+  },
+  "devDependencies": {
+    "@glennsl/bs-json": "^1.1.2",
+    "@glennsl/rebase": "^0.2.0",
+    "bs-in-a-box": "github:glennsl/bs-in-a-box#b83aa97e6a78fdb7274932fa44a8d97dcd7d6d51",
+    "bs-platform": "^2.2.1",
+    "bs-refmt": "github:glennsl/bs-refmt#032f911221b31873030f87d0531d1881539899a8",
+    "codemirror": "^5.34.0",
+    "copy-webpack-plugin": "^4.3.1",
+    "electron": "^1.7.10",
+    "file-loader": "^1.1.7",
+    "fs": "0.0.1-security",
+    "react": "^16.2.0",
+    "react-codemirror2": "^4.0.0",
+    "react-dom": "^16.2.0",
+    "reason-react": "^0.3.2",
+    "vrroom": "github:glennsl/vrroom#691ea02b676675c7826a76ff7586ad442875dfa4"
+  },
+  "dependencies": {}
+}

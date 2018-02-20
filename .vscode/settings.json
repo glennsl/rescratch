@@ -1,0 +1,7 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/*.bs.js": true,
+        ".merlin": true
+    }
+}

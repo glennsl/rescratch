@@ -1,0 +1,20 @@
+html, body, #root {
+  height: 100%;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.output {
+  flex: 1;
+
+  padding: .5em 1em;
+
+  font-family: monospace;
+  background-color: #263238;
+  border-top: 1px solid #546E7A;
+  color: rgba(233, 237, 237, 1);
+}

@@ -19,24 +19,33 @@ for (i in 1 to 100) {
 |};
 
 type state = {
-  code: string
+  code: string,
+  output: string
 };
 
 type action =
-  | CodeUpdated(string);
+  | CodeChanged(string)
+  | OutputChanged(string);
 
 let component = reducerComponent("App");
 let make = _children => {
   ...component,
 
   initialState: () => {
-    code: default
+    code: default,
+    output: "No output yet"
   },
-  reducer: (action, _state) =>
+  reducer: (action, state) =>
     switch action {
-    | CodeUpdated(code) => Update({ code: code })
+    | CodeChanged(code) => Update({ ...state, code })
+    | OutputChanged(output) => Update({ ...state, output })
     },
 
   render: ({ state, send }) =>
-    <Editor value=state.code onChange=(code => send(CodeUpdated(code))) lang=`RE />
+    <div className="app">
+      <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
+      <div className="output">
+        {state.output |> text}
+      </div>
+    </div>
 };

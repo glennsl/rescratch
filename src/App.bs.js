@@ -11,6 +11,7 @@ var Process = require("process");
 var Electron = require("./bindings/Electron.bs.js");
 var FsExtra = require("fs-extra");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
+var Child_process = require("child_process");
 
 var appRoot = Process.cwd();
 
@@ -21,7 +22,9 @@ var sourceFilename = Path.join(projectPath, "src", "main.re");
 function resetProject() {
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(Path.join(appRoot, "templates", "default"), projectPath);
-  return /* () */0;
+  return Child_process.execSync("npm link bs-platform", {
+              cwd: projectPath
+            });
 }
 
 function getCode() {

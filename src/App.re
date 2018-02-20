@@ -13,6 +13,7 @@ let resetProject = () => {
     ~src=Node.Path.join([| appRoot, "templates", "default" |]),
     ~dest=projectPath
   );
+  Node.Child_process.execSync("npm link bs-platform", Node.Child_process.option(~cwd=projectPath, ()));
 };
 
 let getCode = () =>

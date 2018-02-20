@@ -6,6 +6,7 @@ let appRoot = Node.Process.cwd(); /* TODO: Use getAppPath() in prod */
 
 let projectPath = Node.Path.join2(Electron.Remote.App.getPath(`UserData), "current");
 let sourceFilename = Node.Path.join([| projectPath, "src", "main.re" |]);
+let jsFilename = Node.Path.join([| projectPath, "lib", "js", "src", "main.js" |]);
 
 let resetProject = () => {
   FsExtra.removeSync(projectPath);
@@ -33,7 +34,13 @@ let persist = code => {
 };
 
 let compile = (code, return) => {
-  return("")
+  try {
+    Node.Child_process.execSync("bsb", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
+    let jsCode = Node.Fs.readFileSync(jsFilename, `utf8);
+    return(jsCode);
+  } {
+  | Js.Exn.Error(e) => return(e |> Js.Exn.message |> Js.Option.getExn)
+  }
 };
 
 type state = {
@@ -64,7 +71,7 @@ let make = _children => {
         }
       )
     | OutputChanged(output) => Update({ ...state, output })
-    | CompileCompleted(_) => NoUpdate
+    | CompileCompleted(result) => Js.log(result); NoUpdate
     },
 
   render: ({ state, send }) =>

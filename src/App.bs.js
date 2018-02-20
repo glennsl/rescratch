@@ -6,11 +6,14 @@ var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Editor = require("./Editor.bs.js");
+var Js_exn = require("bs-platform/lib/js/js_exn.js");
 var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var Process = require("process");
 var Electron = require("./bindings/Electron.bs.js");
 var FsExtra = require("fs-extra");
+var Js_option = require("bs-platform/lib/js/js_option.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
+var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
 var Child_process = require("child_process");
 
 var appRoot = Process.cwd();
@@ -18,6 +21,8 @@ var appRoot = Process.cwd();
 var projectPath = Path.join(Curry._1(Electron.Remote[/* App */0][/* getPath */0], /* UserData */-556117451), "current");
 
 var sourceFilename = Path.join(projectPath, "src", "main.re");
+
+var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
 
 function resetProject() {
   FsExtra.removeSync(projectPath);
@@ -48,7 +53,20 @@ function persist(code) {
 }
 
 function compile(_, $$return) {
-  return Curry._1($$return, "");
+  try {
+    Child_process.execSync("bsb", {
+          cwd: projectPath
+        });
+    return Curry._1($$return, Fs.readFileSync(jsFilename, "utf8"));
+  }
+  catch (raw_exn){
+    var exn = Js_exn.internalToOCamlException(raw_exn);
+    if (exn[0] === Js_exn.$$Error) {
+      return Curry._1($$return, Js_option.getExn(Js_primitive.undefined_to_opt(exn[1].message)));
+    } else {
+      throw exn;
+    }
+  }
 }
 
 var component = ReasonReact.reducerComponent("App");
@@ -82,8 +100,11 @@ function make() {
                         /* output */state[/* output */1]
                       ],
                       (function (param) {
+                          var send = param[/* send */4];
                           persist(code);
-                          return Curry._1(param[/* send */4], /* CompileCompleted */Block.__(2, [""]));
+                          return compile(code, (function (result) {
+                                        return Curry._1(send, /* CompileCompleted */Block.__(2, [result]));
+                                      }));
                         })
                     ]);
         case 1 : 
@@ -92,6 +113,7 @@ function make() {
                         /* output */action[0]
                       ]]);
         case 2 : 
+            console.log(action[0]);
             return /* NoUpdate */0;
         
       }
@@ -102,6 +124,7 @@ function make() {
 exports.appRoot = appRoot;
 exports.projectPath = projectPath;
 exports.sourceFilename = sourceFilename;
+exports.jsFilename = jsFilename;
 exports.resetProject = resetProject;
 exports.getCode = getCode;
 exports.persist = persist;

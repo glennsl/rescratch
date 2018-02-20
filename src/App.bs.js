@@ -4,6 +4,7 @@ var Fs = require("fs");
 var Path = require("path");
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
+var Utils = require("./Utils.bs.js");
 var React = require("react");
 var Editor = require("./Editor.bs.js");
 var Js_exn = require("bs-platform/lib/js/js_exn.js");
@@ -69,6 +70,12 @@ function compile(_, $$return) {
   }
 }
 
+var persistAndCompile = Utils.debounce((function (param) {
+        var code = param[0];
+        persist(code);
+        return compile(code, param[1]);
+      }), 600);
+
 var component = ReasonReact.reducerComponent("App");
 
 function make() {
@@ -101,10 +108,12 @@ function make() {
                       ],
                       (function (param) {
                           var send = param[/* send */4];
-                          persist(code);
-                          return compile(code, (function (result) {
-                                        return Curry._1(send, /* CompileCompleted */Block.__(2, [result]));
-                                      }));
+                          return persistAndCompile(/* tuple */[
+                                      code,
+                                      (function (result) {
+                                          return Curry._1(send, /* CompileCompleted */Block.__(2, [result]));
+                                        })
+                                    ]);
                         })
                     ]);
         case 1 : 
@@ -129,6 +138,7 @@ exports.resetProject = resetProject;
 exports.getCode = getCode;
 exports.persist = persist;
 exports.compile = compile;
+exports.persistAndCompile = persistAndCompile;
 exports.component = component;
 exports.make = make;
 /* appRoot Not a pure module */

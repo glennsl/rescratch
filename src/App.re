@@ -43,6 +43,11 @@ let compile = (code, return) => {
   }
 };
 
+let persistAndCompile = Utils.debounce(((code, return)) => {
+  persist(code);
+  compile(code, return);
+}, 600);
+
 type state = {
   code: string,
   output: string
@@ -65,10 +70,7 @@ let make = _children => {
     switch action {
     | CodeChanged(code) => UpdateWithSideEffects(
         { ...state, code },
-        ({ send }) => {
-          persist(code);
-          compile(code, result => send(CompileCompleted(result)))
-        }
+        ({ send }) => persistAndCompile((code, result => send(CompileCompleted(result))))
       )
     | OutputChanged(output) => Update({ ...state, output })
     | CompileCompleted(result) => Js.log(result); NoUpdate

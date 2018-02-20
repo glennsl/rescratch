@@ -2,6 +2,7 @@
     "files.exclude": {
         "**/.git": true,
         "**/*.bs.js": true,
+        ".bsb.lock": true,
         ".merlin": true
     }
 }

@@ -17,7 +17,8 @@
   },
   "suffix": ".bs.js",
   "sources": [
-    "src"
+    "src",
+    "src/bindings"
   ],
   "refmt": 3
 }

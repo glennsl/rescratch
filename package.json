@@ -1,7 +1,7 @@
 {
   "name": "rescratch",
   "version": "0.1.0",
-  "main": "src/main.js",
+  "main": "src/main.bs.js",
   "scripts": {
     "start": "./node_modules/.bin/bsb -make-world -w",
     "build": "./node_modules/.bin/bsb -make-world",

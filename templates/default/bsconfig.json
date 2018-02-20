@@ -1,5 +1,5 @@
 {
-  "name": "rescratch project",
+  "name": "rescratch-project",
   "reason": {"react-jsx" : 2},
   "bsc-flags": ["-bs-no-version-header"],
   "bs-dependencies": [],

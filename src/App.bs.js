@@ -28,9 +28,10 @@ var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
 function resetProject() {
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(Path.join(appRoot, "templates", "default"), projectPath);
-  return Child_process.execSync("npm link bs-platform", {
-              cwd: projectPath
-            });
+  Child_process.execSync("npm link bs-platform", {
+        cwd: projectPath
+      });
+  return /* () */0;
 }
 
 function getCode() {
@@ -53,7 +54,7 @@ function persist(code) {
   return /* () */0;
 }
 
-function compile(_, $$return) {
+function compile($$return) {
   try {
     Child_process.execSync("bsb", {
           cwd: projectPath
@@ -71,9 +72,8 @@ function compile(_, $$return) {
 }
 
 var persistAndCompile = Utils.debounce((function (param) {
-        var code = param[0];
-        persist(code);
-        return compile(code, param[1]);
+        persist(param[0]);
+        return compile(param[1]);
       }), 600);
 
 var component = ReasonReact.reducerComponent("App");

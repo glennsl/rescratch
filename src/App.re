@@ -14,7 +14,7 @@ let resetProject = () => {
     ~src=Node.Path.join([| appRoot, "templates", "default" |]),
     ~dest=projectPath
   );
-  Node.Child_process.execSync("npm link bs-platform", Node.Child_process.option(~cwd=projectPath, ()));
+  Node.Child_process.execSync("npm link bs-platform", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
 };
 
 let getCode = () =>
@@ -33,7 +33,7 @@ let persist = code => {
   Node.Fs.writeFileSync(sourceFilename, code, `utf8);
 };
 
-let compile = (code, return) => {
+let compile = (return) => {
   try {
     Node.Child_process.execSync("bsb", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
     let jsCode = Node.Fs.readFileSync(jsFilename, `utf8);
@@ -45,7 +45,7 @@ let compile = (code, return) => {
 
 let persistAndCompile = Utils.debounce(((code, return)) => {
   persist(code);
-  compile(code, return);
+  compile(return);
 }, 600);
 
 type state = {

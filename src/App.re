@@ -2,21 +2,38 @@ open! Rebase;
 open ReasonReact;
 open! Vrroom;
 
+let appRoot = Node.Process.cwd(); /* TODO: Use getAppPath() in prod */
 
-let default = {|
-/* Based on https://rosettacode.org/wiki/FizzBuzz#OCaml */
-let fizzbuzz = (i) =>
-  switch (i mod 3, i mod 5) {
-  | (0, 0) => "FizzBuzz"
-  | (0, _) => "Fizz"
-  | (_, 0) => "Buzz"
-  | _ => string_of_int(i)
+let projectPath = Node.Path.join2(Electron.Remote.App.getPath(`UserData), "current");
+let sourceFilename = Node.Path.join([| projectPath, "src", "main.re" |]);
+
+let resetProject = () => {
+  FsExtra.removeSync(projectPath);
+  FsExtra.copySync(
+    ~src=Node.Path.join([| appRoot, "templates", "default" |]),
+    ~dest=projectPath
+  );
+};
+
+let getCode = () =>
+  try (Node.Fs.readFileSync(sourceFilename, `utf8)) {
+  | _ => {
+      resetProject();
+      try (Node.Fs.readFileSync(sourceFilename, `utf8)) {
+      | _ => {
+          "Fatal error occurred reading curent project"
+        }
+      }
+    }
   };
 
-for (i in 1 to 100) {
-  Js.log(fizzbuzz(i))
+let persist = code => {
+  Node.Fs.writeFileSync(sourceFilename, code, `utf8);
 };
-|};
+
+let compile = (code, return) => {
+  return("")
+};
 
 type state = {
   code: string,
@@ -25,20 +42,28 @@ type state = {
 
 type action =
   | CodeChanged(string)
-  | OutputChanged(string);
+  | OutputChanged(string)
+  | CompileCompleted(string);
 
 let component = reducerComponent("App");
 let make = _children => {
   ...component,
 
   initialState: () => {
-    code: default,
+    code: getCode(),
     output: "No output yet"
   },
   reducer: (action, state) =>
     switch action {
-    | CodeChanged(code) => Update({ ...state, code })
+    | CodeChanged(code) => UpdateWithSideEffects(
+        { ...state, code },
+        ({ send }) => {
+          persist(code);
+          compile(code, result => send(CompileCompleted(result)))
+        }
+      )
     | OutputChanged(output) => Update({ ...state, output })
+    | CompileCompleted(_) => NoUpdate
     },
 
   render: ({ state, send }) =>

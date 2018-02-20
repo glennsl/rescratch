@@ -11,6 +11,59 @@ module App = {
 
   [@bs.module "electron"] [@bs.scope "app"]
   external quit : unit => unit = "";
+
+  [@bs.module "electron"] [@bs.scope "app"]
+  external getAppPath : unit => string = "";
+
+  [@bs.module "electron"] [@bs.scope "app"]
+  external getPath : string => string = "";
+  let getPath = name =>
+    getPath(
+      switch name {
+      | `Home       => "home"
+      | `AppData    => "appData"
+      | `UserData   => "userData"
+      | `Temp       => "temp"
+      | `Exe        => "exe"
+      | `Module     => "module"
+      | `Desktop    => "desktop"
+      | `Documents  => "documents"
+      | `Downloads  => "downloads"
+      | `Music      => "music"
+      | `Pictures   => "pictures"
+      | `Videos     => "videos"
+      | `Logs       => "logs"
+      | `Flash      => "pepperFlashSystemPlugin" 
+      }
+    )
+};
+module Remote = {
+  module App = {
+    [@bs.module "electron"] [@bs.scope ("remote", "app")]
+    external getAppPath : unit => string = "";
+
+    [@bs.module "electron"] [@bs.scope ("remote", "app")]
+    external getPath : string => string = "";
+    let getPath = name =>
+      getPath(
+        switch name {
+        | `Home       => "home"
+        | `AppData    => "appData"
+        | `UserData   => "userData"
+        | `Temp       => "temp"
+        | `Exe        => "exe"
+        | `Module     => "module"
+        | `Desktop    => "desktop"
+        | `Documents  => "documents"
+        | `Downloads  => "downloads"
+        | `Music      => "music"
+        | `Pictures   => "pictures"
+        | `Videos     => "videos"
+        | `Logs       => "logs"
+        | `Flash      => "pepperFlashSystemPlugin" 
+        }
+      )
+  };
 };
 
 module BrowserWindow = {

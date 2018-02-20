@@ -1,13 +1,52 @@
 'use strict';
 
+var Fs = require("fs");
+var Path = require("path");
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Editor = require("./Editor.bs.js");
 var Vrroom = require("vrroom/src/Vrroom.bs.js");
+var Process = require("process");
+var Electron = require("./bindings/Electron.bs.js");
+var FsExtra = require("fs-extra");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 
-var $$default = "\n/* Based on https://rosettacode.org/wiki/FizzBuzz#OCaml */\nlet fizzbuzz = (i) =>\n  switch (i mod 3, i mod 5) {\n  | (0, 0) => \"FizzBuzz\"\n  | (0, _) => \"Fizz\"\n  | (_, 0) => \"Buzz\"\n  | _ => string_of_int(i)\n  };\n\nfor (i in 1 to 100) {\n  Js.log(fizzbuzz(i))\n};\n";
+var appRoot = Process.cwd();
+
+var projectPath = Path.join(Curry._1(Electron.Remote[/* App */0][/* getPath */0], /* UserData */-556117451), "current");
+
+var sourceFilename = Path.join(projectPath, "src", "main.re");
+
+function resetProject() {
+  FsExtra.removeSync(projectPath);
+  FsExtra.copySync(Path.join(appRoot, "templates", "default"), projectPath);
+  return /* () */0;
+}
+
+function getCode() {
+  try {
+    return Fs.readFileSync(sourceFilename, "utf8");
+  }
+  catch (exn){
+    resetProject(/* () */0);
+    try {
+      return Fs.readFileSync(sourceFilename, "utf8");
+    }
+    catch (exn$1){
+      return "Fatal error occurred reading curent project";
+    }
+  }
+}
+
+function persist(code) {
+  Fs.writeFileSync(sourceFilename, code, "utf8");
+  return /* () */0;
+}
+
+function compile(_, $$return) {
+  return Curry._1($$return, "");
+}
 
 var component = ReasonReact.reducerComponent("App");
 
@@ -26,29 +65,44 @@ function make() {
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[
-              /* code */$$default,
+              /* code */getCode(/* () */0),
               /* output */"No output yet"
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {
-      if (action.tag) {
-        return /* Update */Block.__(0, [/* record */[
-                    /* code */state[/* code */0],
-                    /* output */action[0]
-                  ]]);
-      } else {
-        return /* Update */Block.__(0, [/* record */[
-                    /* code */action[0],
-                    /* output */state[/* output */1]
-                  ]]);
+      switch (action.tag | 0) {
+        case 0 : 
+            var code = action[0];
+            return /* UpdateWithSideEffects */Block.__(3, [
+                      /* record */[
+                        /* code */code,
+                        /* output */state[/* output */1]
+                      ],
+                      (function (param) {
+                          persist(code);
+                          return Curry._1(param[/* send */4], /* CompileCompleted */Block.__(2, [""]));
+                        })
+                    ]);
+        case 1 : 
+            return /* Update */Block.__(0, [/* record */[
+                        /* code */state[/* code */0],
+                        /* output */action[0]
+                      ]]);
+        case 2 : 
+            return /* NoUpdate */0;
+        
       }
     });
   return newrecord;
 }
 
-exports.$$default = $$default;
-exports.default = $$default;
-exports.__esModule = true;
+exports.appRoot = appRoot;
+exports.projectPath = projectPath;
+exports.sourceFilename = sourceFilename;
+exports.resetProject = resetProject;
+exports.getCode = getCode;
+exports.persist = persist;
+exports.compile = compile;
 exports.component = component;
 exports.make = make;
-/* component Not a pure module */
+/* appRoot Not a pure module */

@@ -6,10 +6,7 @@
     "reason-react",
     "@glennsl/rebase",
     "@glennsl/bs-json",
-    "vrroom",
-    "typed-glamor",
-    "bs-refmt",
-    "bs-in-a-box"
+    "vrroom"
   ],
   "package-specs": {
     "module": "commonjs",

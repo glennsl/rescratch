@@ -11,7 +11,7 @@ let _langToMode =
       | `JS => "javascript";
 
 let component = ReasonReact.statelessComponent("Editor");
-let make = (~value, ~lang, ~defaultValue=?, ~readOnly=false, ~onChange=?, _:childless) => {
+let make = (~value, ~lang, ~defaultValue=?, ~lineNumbers=true, ~readOnly=false, ~onChange=?, _:childless) => {
   ...component,
 
   render: (_self) =>
@@ -22,7 +22,7 @@ let make = (~value, ~lang, ~defaultValue=?, ~readOnly=false, ~onChange=?, _:chil
       options={
         "mode":           _langToMode(lang),
         "theme":          "material",
-        "lineNumbers":    true,
+        "lineNumbers":    lineNumbers,
         "readOnly":       Js.Boolean.to_js_boolean(readOnly),
         "scrollbarStyle": "simple"
       }

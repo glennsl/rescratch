@@ -7,14 +7,16 @@ var MaterialUIIcons = require("bs-material-ui-icons/src/MaterialUIIcons.js");
 
 var component = ReasonReact.statelessComponent("Toolbar");
 
-function make(onReset, onHelp, _) {
+function make(onReset, _) {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       return React.createElement("div", {
-                  className: "c-toolbar"
+                  className: "c-statusbar"
                 }, ReasonReact.element(/* None */0, /* None */0, Button.make("Reset", /* Some */[ReasonReact.element(/* None */0, /* None */0, MaterialUIIcons.Delete[/* make */0](/* array */[]))], /* None */0, /* None */0, /* None */0, onReset, /* array */[])), React.createElement("div", {
                       className: "separator"
-                    }), ReasonReact.element(/* None */0, /* None */0, Button.make("Help", /* Some */[ReasonReact.element(/* None */0, /* None */0, MaterialUIIcons.HelpOutline[/* make */0](/* array */[]))], /* None */0, /* None */0, /* None */0, onHelp, /* array */[])));
+                    }), ReasonReact.element(/* None */0, /* None */0, Button.make("Output", /* None */0, /* None */0, /* None */0, /* None */0, (function () {
+                            return /* () */0;
+                          }), /* array */[])));
     });
   return newrecord;
 }

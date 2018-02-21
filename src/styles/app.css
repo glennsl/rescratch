@@ -18,7 +18,7 @@ html, body, #root {
 
 .c-button {
   color: var(--text-color);
-  padding: 1em;
+  padding: .5em 1em;
   cursor: pointer;
   background: var(--main-background-color);
 }
@@ -29,17 +29,20 @@ html, body, #root {
 .c-button > svg {
   vertical-align: middle;
   margin: 0 .25em;
+  width: 16px;
+  height: 16px;
 }
 .c-button:hover {
   background: var(--highlight-overlay-color);
 }
 
-.c-toolbar {
+.c-statusbar {
   display: flex;
 
   background: var(--main-background-color);
+  font-size: 13px;
 }
-.c-toolbar > .separator {
+.c-statusbar > .separator {
   flex: auto;
 }
 
@@ -55,7 +58,10 @@ html, body, #root {
 }
 
 .app > .editors > .react-codemirror2 {
-  flex: 1;
+  width: 50%;
+}
+.app > .editors > .react-codemirror2:first-child {
+  border-right: 1px solid var(--main-background-color);
 }
 
 .app > .editors > .react-codemirror2 > .CodeMirror {
@@ -66,7 +72,7 @@ html, body, #root {
 
 .output {
   height: 200px;
-  overflow: scroll;
+  overflow: auto;
 
   padding: .5em 1em;
 

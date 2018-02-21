@@ -95,13 +95,15 @@ let make = _children => {
 
   render: ({ state, send }) =>
     <div className="app">
-      <Toolbar onReset=resetProject onHelp=(()=>()) />
       <div className="editors">
         <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
-        <Editor value=state.jsCode lang=`JS />
+        <Editor value=state.jsCode lang=`JS lineNumbers=false />
       </div>
+      <StatusBar onReset=resetProject />
+      /*
       <pre className="output">
         {state.output |> text}
       </pre>
+      */
     </div>
 };

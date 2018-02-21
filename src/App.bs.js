@@ -9,12 +9,11 @@ var Utils = require("./Utils.bs.js");
 var React = require("react");
 var Editor = require("./Editor.bs.js");
 var Js_exn = require("bs-platform/lib/js/js_exn.js");
-var Vrroom = require("vrroom/src/Vrroom.bs.js");
-var Toolbar = require("./Toolbar.bs.js");
 var Process = require("process");
 var Electron = require("./bindings/Electron.bs.js");
 var FsExtra = require("fs-extra");
 var Js_option = require("bs-platform/lib/js/js_option.js");
+var StatusBar = require("./StatusBar.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
 var Child_process = require("child_process");
@@ -90,15 +89,11 @@ function make() {
       var state = param[/* state */2];
       return React.createElement("div", {
                   className: "app"
-                }, ReasonReact.element(/* None */0, /* None */0, Toolbar.make(resetProject, (function () {
-                            return /* () */0;
-                          }), /* array */[])), React.createElement("div", {
+                }, React.createElement("div", {
                       className: "editors"
-                    }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* RE */18355, /* None */0, /* None */0, /* Some */[(function (code) {
+                    }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* RE */18355, /* None */0, /* None */0, /* None */0, /* Some */[(function (code) {
                                   return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
-                                })], /* array */[])), ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* JS */16585, /* None */0, /* None */0, /* None */0, /* array */[]))), React.createElement("pre", {
-                      className: "output"
-                    }, Vrroom.text(state[/* output */2])));
+                                })], /* array */[])), ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* JS */16585, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(resetProject, /* array */[])));
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[

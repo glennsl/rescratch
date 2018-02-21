@@ -26,14 +26,15 @@ function _langToMode(param) {
 
 var component = ReasonReact.statelessComponent("Editor");
 
-function make(value, lang, defaultValue, $staropt$star, onChange, _) {
-  var readOnly = $staropt$star ? $staropt$star[0] : /* false */0;
+function make(value, lang, defaultValue, $staropt$star, $staropt$star$1, onChange, _) {
+  var lineNumbers = $staropt$star ? $staropt$star[0] : /* true */1;
+  var readOnly = $staropt$star$1 ? $staropt$star$1[0] : /* false */0;
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       return ReasonReact.element(/* None */0, /* None */0, CodeMirror.make(/* None */0, /* Some */[value], defaultValue, /* None */0, onChange, /* Some */[{
                         mode: _langToMode(lang),
                         theme: "material",
-                        lineNumbers: /* true */1,
+                        lineNumbers: lineNumbers,
                         readOnly: Js_boolean.to_js_boolean(readOnly),
                         scrollbarStyle: "simple"
                       }], /* array */[]));

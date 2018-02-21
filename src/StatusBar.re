@@ -2,10 +2,10 @@ open! Vrroom;
 module Styles = ToolbarStyles;
 
 let component = ReasonReact.statelessComponent("Toolbar");
-let make = (~onReset, ~onHelp, _:childless) => {
+let make = (~onReset, _:childless) => {
   ...component,
   render: _self =>
-    <div className="c-toolbar">
+    <div className="c-statusbar">
 
       <Button icon    = <MaterialUIIcons.Delete />
               label   = "Reset"
@@ -13,9 +13,8 @@ let make = (~onReset, ~onHelp, _:childless) => {
 
       <div className="separator" />
 
-      <Button icon    = <MaterialUIIcons.HelpOutline />
-              label   = "Help"
-              onClick = onHelp />
+      <Button label   = "Output"
+              onClick = (() => ()) />
 
     </div>
 };

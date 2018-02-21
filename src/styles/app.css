@@ -1,5 +1,38 @@
+:root {
+  --text-color: rgba(233, 237, 237, 1);
+  --text-color: #9ccde5;
+  --main-background-color: #162228;
+  --dark-background-color: #121c20;
+  --panel-background-color: #263238;
+  --highlight-overlay-color: rgba(255, 255, 255, 0.05);
+
+  --monospace-font-families: "SFMono-Regular", "Consolas", "Roboto Mono", "Droid Sans Mono", "Liberation Mono", "Menlo", "Courier", monospace;
+}
+
 html, body, #root {
   height: 100%;
+  background: var(--main-background-color);
+	font-family: Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-size: 15px;
+}
+
+.c-button {
+  color: var(--text-color);
+  padding: 1em;
+  cursor: pointer;
+  background: var(--main-background-color);
+}
+.c-button:hover {
+  background: var(--highlight-overlay-color);
+}
+
+.c-toolbar {
+  display: flex;
+
+  background: var(--main-background-color);
+}
+.c-toolbar > .separator {
+  flex: auto;
 }
 
 .app {
@@ -13,7 +46,9 @@ html, body, #root {
 }
 
 .app > .react-codemirror2 > .CodeMirror {
-  height: 100%;
+  min-height: 100%;
+  font-family: var(--monospace-font-families);
+  font-size: 14px;
 }
 
 .output {
@@ -21,8 +56,8 @@ html, body, #root {
 
   padding: .5em 1em;
 
-  font-family: monospace;
-  background-color: #263238;
-  border-top: 1px solid #546E7A;
-  color: rgba(233, 237, 237, 1);
+  font-family: var(--monospace-font-families);
+  font-size: 14px;
+  background-color: var(--main-background-color);
+  color: var(--text-color);
 }

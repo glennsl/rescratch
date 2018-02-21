@@ -90,6 +90,7 @@ let make = _children => {
 
   render: ({ state, send }) =>
     <div className="app">
+      <Toolbar onReset=resetProject onHelp=(()=>()) />
       <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
       <div className="output">
         {state.output |> text}

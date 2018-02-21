@@ -10,6 +10,7 @@ var React = require("react");
 var Editor = require("./Editor.bs.js");
 var Js_exn = require("bs-platform/lib/js/js_exn.js");
 var Vrroom = require("vrroom/src/Vrroom.bs.js");
+var Toolbar = require("./Toolbar.bs.js");
 var Process = require("process");
 var Electron = require("./bindings/Electron.bs.js");
 var FsExtra = require("fs-extra");
@@ -89,7 +90,9 @@ function make() {
       var state = param[/* state */2];
       return React.createElement("div", {
                   className: "app"
-                }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* RE */18355, /* None */0, /* None */0, /* Some */[(function (code) {
+                }, ReasonReact.element(/* None */0, /* None */0, Toolbar.make(resetProject, (function () {
+                            return /* () */0;
+                          }), /* array */[])), ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* RE */18355, /* None */0, /* None */0, /* Some */[(function (code) {
                               return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
                             })], /* array */[])), React.createElement("div", {
                       className: "output"

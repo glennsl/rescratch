@@ -49,14 +49,19 @@ html, body, #root {
   height: 100%;
 }
 
-.app > .react-codemirror2 {
+.app > .editors {
+  display: flex;
   flex: 1;
 }
 
-.app > .react-codemirror2 > .CodeMirror {
+.app > .editors > .react-codemirror2 {
+  flex: 1;
+}
+
+.app > .editors > .react-codemirror2 > .CodeMirror {
   min-height: 100%;
   font-family: var(--monospace-font-families);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .output {
@@ -65,7 +70,7 @@ html, body, #root {
   padding: .5em 1em;
 
   font-family: var(--monospace-font-families);
-  font-size: 14px;
+  font-size: 13px;
   background-color: var(--main-background-color);
   color: var(--text-color);
 }

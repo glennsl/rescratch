@@ -92,15 +92,18 @@ function make() {
                   className: "app"
                 }, ReasonReact.element(/* None */0, /* None */0, Toolbar.make(resetProject, (function () {
                             return /* () */0;
-                          }), /* array */[])), ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* RE */18355, /* None */0, /* None */0, /* Some */[(function (code) {
-                              return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
-                            })], /* array */[])), React.createElement("div", {
+                          }), /* array */[])), React.createElement("div", {
+                      className: "editors"
+                    }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* RE */18355, /* None */0, /* None */0, /* Some */[(function (code) {
+                                  return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
+                                })], /* array */[])), ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* JS */16585, /* None */0, /* None */0, /* None */0, /* array */[]))), React.createElement("div", {
                       className: "output"
-                    }, Vrroom.text(state[/* output */1])));
+                    }, Vrroom.text(state[/* output */2])));
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[
               /* code */getCode(/* () */0),
+              /* jsCode */"",
               /* output */"No output yet"
             ];
     });
@@ -111,7 +114,8 @@ function make() {
             return /* UpdateWithSideEffects */Block.__(3, [
                       /* record */[
                         /* code */code,
-                        /* output */state[/* output */1]
+                        /* jsCode */state[/* jsCode */1],
+                        /* output */state[/* output */2]
                       ],
                       (function (param) {
                           var send = param[/* send */4];
@@ -126,11 +130,18 @@ function make() {
         case 1 : 
             return /* Update */Block.__(0, [/* record */[
                         /* code */state[/* code */0],
+                        /* jsCode */state[/* jsCode */1],
                         /* output */action[0]
                       ]]);
         case 2 : 
             var jsCode = action[0];
-            return /* SideEffects */Block.__(2, [(function () {
+            return /* UpdateWithSideEffects */Block.__(3, [
+                      /* record */[
+                        /* code */state[/* code */0],
+                        /* jsCode */jsCode,
+                        /* output */state[/* output */2]
+                      ],
+                      (function () {
                           try {
                             var vm = VM2.makeVM(/* Some */[/* Allow */885068905], { });
                             vm.run(jsCode, jsFilename);
@@ -141,7 +152,8 @@ function make() {
                             console.log("error", e);
                             return /* () */0;
                           }
-                        })]);
+                        })
+                    ]);
         
       }
     });

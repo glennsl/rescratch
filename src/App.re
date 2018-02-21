@@ -51,6 +51,7 @@ let persistAndCompile = Utils.debounce(((code, return)) => {
 
 type state = {
   code: string,
+  jsCode: string,
   output: string
 };
 
@@ -65,6 +66,7 @@ let make = _children => {
 
   initialState: () => {
     code: getCode(),
+    jsCode: "",
     output: "No output yet"
   },
   reducer: (action, state) =>
@@ -78,7 +80,9 @@ let make = _children => {
       Update({ ...state, output })
 
     | CompileCompleted(jsCode) =>
-      SideEffects(({ state }) => {
+      UpdateWithSideEffects(
+        { ...state, jsCode },
+        ({ state }) => {
         try {
           let vm = VM2.makeVM(~requireExternal=`Allow, ~sandbox=Js.Obj.empty());
           vm |> VM2.run(~code=jsCode, ~filename=jsFilename);
@@ -91,7 +95,10 @@ let make = _children => {
   render: ({ state, send }) =>
     <div className="app">
       <Toolbar onReset=resetProject onHelp=(()=>()) />
-      <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
+      <div className="editors">
+        <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
+        <Editor value=state.jsCode lang=`JS />
+      </div>
       <div className="output">
         {state.output |> text}
       </div>

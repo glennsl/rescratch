@@ -72,8 +72,19 @@ let make = _children => {
         { ...state, code },
         ({ send }) => persistAndCompile((code, result => send(CompileCompleted(result))))
       )
-    | OutputChanged(output) => Update({ ...state, output })
-    | CompileCompleted(result) => Js.log(result); NoUpdate
+
+    | OutputChanged(output) =>
+      Update({ ...state, output })
+
+    | CompileCompleted(jsCode) =>
+      SideEffects(({ state }) => {
+        try {
+          let context = NodeVm.createContext([%raw "{ console: console, exports: {}, require: require }"]);
+          NodeVm.runInContext(jsCode, context);
+        } {
+        | e => Js.log(e)
+        }
+      })
     },
 
   render: ({ state, send }) =>

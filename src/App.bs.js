@@ -1,6 +1,7 @@
 'use strict';
 
 var Fs = require("fs");
+var Vm = require("vm");
 var Path = require("path");
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
@@ -122,8 +123,19 @@ function make() {
                         /* output */action[0]
                       ]]);
         case 2 : 
-            console.log(action[0]);
-            return /* NoUpdate */0;
+            var jsCode = action[0];
+            return /* SideEffects */Block.__(2, [(function () {
+                          try {
+                            var context = Vm.createContext(({ console: console, exports: {}, require: require }));
+                            Vm.runInContext(jsCode, context);
+                            return /* () */0;
+                          }
+                          catch (raw_e){
+                            var e = Js_exn.internalToOCamlException(raw_e);
+                            console.log(e);
+                            return /* () */0;
+                          }
+                        })]);
         
       }
     });

@@ -22,6 +22,14 @@ html, body, #root {
   cursor: pointer;
   background: var(--main-background-color);
 }
+.c-button > .label {
+  vertical-align: middle;
+  margin: 0 .25em;
+}
+.c-button > svg {
+  vertical-align: middle;
+  margin: 0 .25em;
+}
 .c-button:hover {
   background: var(--highlight-overlay-color);
 }

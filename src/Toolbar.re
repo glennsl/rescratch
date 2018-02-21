@@ -7,13 +7,13 @@ let make = (~onReset, ~onHelp, _:childless) => {
   render: _self =>
     <div className="c-toolbar">
 
-      <Button icon    = "chevron-right"
+      <Button icon    = <MaterialUIIcons.Delete />
               label   = "Reset"
               onClick = onReset />
 
       <div className="separator" />
 
-      <Button icon    = "help-circle-outline"
+      <Button icon    = <MaterialUIIcons.HelpOutline />
               label   = "Help"
               onClick = onHelp />
 

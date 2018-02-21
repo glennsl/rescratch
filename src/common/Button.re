@@ -1,13 +1,9 @@
 open Vrroom;
 module Styles = ButtonStyles;
 
-let makeIcon =
-  fun | Some(name) => <Icon name />
-      | None       => nothing;
-
 let component = ReasonReact.statelessComponent("Button");
 let make = (~label,
-            ~icon=?,
+            ~icon=nothing,
             ~style=`Normal,
             ~alignIcon=`Left,
             ~className="",
@@ -19,9 +15,9 @@ let make = (~label,
     <button className = ClassName.join(["c-button", className])
             onClick   = (_e => onClick()) >
 
-      (alignIcon === `Left ? makeIcon(icon) : nothing)
-      (label |> text)
-      (alignIcon === `Right ? makeIcon(icon) : nothing)
+      (alignIcon === `Left ? icon : nothing)
+      <span className="label"> {label |> text} </span>
+      (alignIcon === `Right ? icon : nothing)
 
     </button>
 };

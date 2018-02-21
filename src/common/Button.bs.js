@@ -1,24 +1,16 @@
 'use strict';
 
-var Icon = require("./Icon.bs.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 
-function makeIcon(param) {
-  if (param) {
-    return ReasonReact.element(/* None */0, /* None */0, Icon.make(param[0], /* array */[]));
-  } else {
-    return Vrroom.nothing;
-  }
-}
-
 var component = ReasonReact.statelessComponent("Button");
 
-function make(label, icon, _, $staropt$star, $staropt$star$1, onClick, _$1) {
-  var alignIcon = $staropt$star ? $staropt$star[0] : /* Left */847852583;
-  var className = $staropt$star$1 ? $staropt$star$1[0] : "";
+function make(label, $staropt$star, _, $staropt$star$1, $staropt$star$2, onClick, _$1) {
+  var icon = $staropt$star ? $staropt$star[0] : Vrroom.nothing;
+  var alignIcon = $staropt$star$1 ? $staropt$star$1[0] : /* Left */847852583;
+  var className = $staropt$star$2 ? $staropt$star$2[0] : "";
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       var match = +(alignIcon === /* Left */847852583);
@@ -34,7 +26,9 @@ function make(label, icon, _, $staropt$star, $staropt$star$1, onClick, _$1) {
                   onClick: (function () {
                       return Curry._1(onClick, /* () */0);
                     })
-                }, match !== 0 ? makeIcon(icon) : Vrroom.nothing, Vrroom.text(label), match$1 !== 0 ? makeIcon(icon) : Vrroom.nothing);
+                }, match !== 0 ? icon : Vrroom.nothing, React.createElement("span", {
+                      className: "label"
+                    }, Vrroom.text(label)), match$1 !== 0 ? icon : Vrroom.nothing);
     });
   return newrecord;
 }
@@ -42,7 +36,6 @@ function make(label, icon, _, $staropt$star, $staropt$star$1, onClick, _$1) {
 var Styles = 0;
 
 exports.Styles = Styles;
-exports.makeIcon = makeIcon;
 exports.component = component;
 exports.make = make;
 /* component Not a pure module */

@@ -6,7 +6,8 @@
     "reason-react",
     "@glennsl/rebase",
     "@glennsl/bs-json",
-    "vrroom"
+    "vrroom",
+    "bs-material-ui-icons"
   ],
   "package-specs": {
     "module": "commonjs",

@@ -94,7 +94,9 @@ function make() {
                       className: "editors"
                     }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* Some */[/* RE */18355], /* None */0, /* None */0, /* None */0, /* Some */[(function (code) {
                                   return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
-                                })], /* array */[])), match >= 16617 ? ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])) : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* output */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(resetProject, /* array */[])));
+                                })], /* array */[])), match >= 16617 ? ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])) : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* output */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(resetProject, state[/* activePane */3], (function (pane) {
+                            return Curry._1(send, /* PaneSelected */Block.__(3, [pane]));
+                          }), /* array */[])));
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[
@@ -158,6 +160,13 @@ function make() {
                           }
                         })
                     ]);
+        case 3 : 
+            return /* Update */Block.__(0, [/* record */[
+                        /* code */state[/* code */0],
+                        /* jsCode */state[/* jsCode */1],
+                        /* output */state[/* output */2],
+                        /* activePane */action[0]
+                      ]]);
         
       }
     });

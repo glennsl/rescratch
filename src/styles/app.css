@@ -14,9 +14,10 @@ html, body, #root {
   background: var(--main-background-color);
 	font-family: Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 15px;
+  color: var(--text-color);
 }
 
-.c-button {
+.c-button, .c-select-button button {
   color: var(--text-color);
   padding: .5em 1em;
   cursor: pointer;
@@ -36,6 +37,32 @@ html, body, #root {
   background: var(--highlight-overlay-color);
 }
 
+.c-select-button {
+  display: inline-block;
+  position: relative;
+}
+.c-select-button menu {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  z-index: 100;
+  transform: translateX(-2);
+  background: var(--dark-background-color);
+  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.25);
+}
+.c-select-button menu > ul > li {
+  padding: 1em;
+  cursor: pointer;
+  text-align: right;
+}
+.c-select-button menu > ul > li:hover {
+  background: var(--highlight-overlay-color);
+}
+.c-select-button.s-open menu {
+  display: block;
+}
+
 .c-statusbar {
   display: flex;
 
@@ -50,6 +77,7 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
 }
 
 .app > .editors {

@@ -59,7 +59,8 @@ type state = {
 type action =
   | CodeChanged(string)
   | OutputChanged(string)
-  | CompileCompleted(string);
+  | CompileCompleted(string)
+  | PaneSelected([`Js | `Output]);
 
 let component = reducerComponent("App");
 let make = _children => {
@@ -93,6 +94,9 @@ let make = _children => {
         | e => Js.log2("error", e)
         }
       })
+
+    | PaneSelected(pane) =>
+      Update({ ...state, activePane: pane })
     },
 
   render: ({ state, send }) =>
@@ -104,6 +108,9 @@ let make = _children => {
         | `Output => <Editor value=state.output lineNumbers=false />
         }}
       </div>
-      <StatusBar onReset=resetProject />
+      <StatusBar
+          onReset       = resetProject
+          selectedPane  = state.activePane
+          onSelectPane  = (pane => send(PaneSelected(pane)))/>
     </div>
 };

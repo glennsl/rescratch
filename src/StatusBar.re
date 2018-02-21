@@ -1,8 +1,15 @@
 open! Vrroom;
 module Styles = ToolbarStyles;
 
+module PaneSelectButton = SelectButton.Make({
+  type value = [
+    | `Js
+    | `Output
+  ]
+});
+
 let component = ReasonReact.statelessComponent("Toolbar");
-let make = (~onReset, _:childless) => {
+let make = (~onReset, ~selectedPane, ~onSelectPane, _:childless) => {
   ...component,
   render: _self =>
     <div className="c-statusbar">
@@ -13,8 +20,17 @@ let make = (~onReset, _:childless) => {
 
       <div className="separator" />
 
-      <Button label   = "Output"
-              onClick = (() => ()) />
+      <PaneSelectButton
+          items = [{
+              label: "JavaScript",
+              value: `Js
+            }, {
+              label: "Output",
+              value: `Output
+            }]
+          selected = selectedPane
+          onSelect = onSelectPane
+        />
 
     </div>
 };

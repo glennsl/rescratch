@@ -1,7 +1,7 @@
 'use strict';
 
 var Fs = require("fs");
-var Vm = require("vm");
+var VM2 = require("./bindings/VM2.bs.js");
 var Path = require("path");
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
@@ -28,7 +28,10 @@ var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
 
 function resetProject() {
   FsExtra.removeSync(projectPath);
-  FsExtra.copySync(Path.join(appRoot, "templates", "default"), projectPath);
+  FsExtra.copySync(Path.join(appRoot, "templates", "json"), projectPath);
+  Child_process.execSync("npm install", {
+        cwd: projectPath
+      });
   Child_process.execSync("npm link bs-platform", {
         cwd: projectPath
       });
@@ -126,13 +129,13 @@ function make() {
             var jsCode = action[0];
             return /* SideEffects */Block.__(2, [(function () {
                           try {
-                            var context = Vm.createContext(({ console: console, exports: {}, require: require }));
-                            Vm.runInContext(jsCode, context);
+                            var vm = VM2.makeVM(/* Some */[/* Allow */885068905], { });
+                            vm.run(jsCode, jsFilename);
                             return /* () */0;
                           }
                           catch (raw_e){
                             var e = Js_exn.internalToOCamlException(raw_e);
-                            console.log(e);
+                            console.log("error", e);
                             return /* () */0;
                           }
                         })]);

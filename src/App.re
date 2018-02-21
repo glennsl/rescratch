@@ -11,9 +11,10 @@ let jsFilename = Node.Path.join([| projectPath, "lib", "js", "src", "main.js" |]
 let resetProject = () => {
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(
-    ~src=Node.Path.join([| appRoot, "templates", "default" |]),
+    ~src=Node.Path.join([| appRoot, "templates", "json" |]),
     ~dest=projectPath
   );
+  Node.Child_process.execSync("npm install", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
   Node.Child_process.execSync("npm link bs-platform", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
 };
 
@@ -79,10 +80,10 @@ let make = _children => {
     | CompileCompleted(jsCode) =>
       SideEffects(({ state }) => {
         try {
-          let context = NodeVm.createContext([%raw "{ console: console, exports: {}, require: require }"]);
-          NodeVm.runInContext(jsCode, context);
+          let vm = VM2.makeVM(~requireExternal=`Allow, ~sandbox=Js.Obj.empty());
+          vm |> VM2.run(~code=jsCode, ~filename=jsFilename);
         } {
-        | e => Js.log(e)
+        | e => Js.log2("error", e)
         }
       })
     },

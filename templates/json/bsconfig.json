@@ -1,8 +1,8 @@
 {
-  "name": "rescratch-default-template",
+  "name": "rescratch-json-template",
   "reason": {"react-jsx" : 2},
   "bsc-flags": ["-bs-no-version-header"],
-  "bs-dependencies": [],
+  "bs-dependencies": ["@glennsl/bs-json"],
   "sources": ["src"],
   "refmt": 3
 }

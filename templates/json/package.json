@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@glennsl/bs-json":"^1.1.2"
+  }
+}

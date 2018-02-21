@@ -52,7 +52,8 @@ let persistAndCompile = Utils.debounce(((code, return)) => {
 type state = {
   code: string,
   jsCode: string,
-  output: string
+  output: string,
+  activePane: [`Js | `Output]
 };
 
 type action =
@@ -67,7 +68,8 @@ let make = _children => {
   initialState: () => {
     code: getCode(),
     jsCode: "",
-    output: ""
+    output: "",
+    activePane: `Output
   },
   reducer: (action, state) =>
     switch action {
@@ -97,13 +99,11 @@ let make = _children => {
     <div className="app">
       <div className="editors">
         <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
-        <Editor value=state.jsCode lang=`JS lineNumbers=false />
+        {switch (state.activePane) {
+        | `Js     => <Editor value=state.jsCode lang=`JS lineNumbers=false />
+        | `Output => <Editor value=state.output lineNumbers=false />
+        }}
       </div>
       <StatusBar onReset=resetProject />
-      /*
-      <pre className="output">
-        {state.output |> text}
-      </pre>
-      */
     </div>
 };

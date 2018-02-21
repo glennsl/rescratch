@@ -87,19 +87,21 @@ function make() {
   newrecord[/* render */9] = (function (param) {
       var send = param[/* send */4];
       var state = param[/* state */2];
+      var match = state[/* activePane */3];
       return React.createElement("div", {
                   className: "app"
                 }, React.createElement("div", {
                       className: "editors"
-                    }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* RE */18355, /* None */0, /* None */0, /* None */0, /* Some */[(function (code) {
+                    }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* Some */[/* RE */18355], /* None */0, /* None */0, /* None */0, /* Some */[(function (code) {
                                   return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
-                                })], /* array */[])), ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* JS */16585, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(resetProject, /* array */[])));
+                                })], /* array */[])), match >= 16617 ? ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])) : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* output */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(resetProject, /* array */[])));
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[
               /* code */getCode(/* () */0),
               /* jsCode */"",
-              /* output */""
+              /* output */"",
+              /* activePane : Output */-1055554783
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {
@@ -110,7 +112,8 @@ function make() {
                       /* record */[
                         /* code */code,
                         /* jsCode */state[/* jsCode */1],
-                        /* output */state[/* output */2]
+                        /* output */state[/* output */2],
+                        /* activePane */state[/* activePane */3]
                       ],
                       (function (param) {
                           var send = param[/* send */4];
@@ -126,7 +129,8 @@ function make() {
             return /* Update */Block.__(0, [/* record */[
                         /* code */state[/* code */0],
                         /* jsCode */state[/* jsCode */1],
-                        /* output */state[/* output */2] + ("\n" + action[0])
+                        /* output */state[/* output */2] + ("\n" + action[0]),
+                        /* activePane */state[/* activePane */3]
                       ]]);
         case 2 : 
             var jsCode = action[0];
@@ -134,7 +138,8 @@ function make() {
                       /* record */[
                         /* code */state[/* code */0],
                         /* jsCode */jsCode,
-                        /* output */state[/* output */2]
+                        /* output */state[/* output */2],
+                        /* activePane */state[/* activePane */3]
                       ],
                       (function (param) {
                           var send = param[/* send */4];

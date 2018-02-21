@@ -1,8 +1,10 @@
 'use strict';
 
+var Rebase = require("@glennsl/rebase/src/Rebase.bs.js");
 var CodeMirror = require("./bindings/CodeMirror.bs.js");
 var Js_boolean = require("bs-platform/lib/js/js_boolean.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
+var Js_undefined = require("bs-platform/lib/js/js_undefined.js");
 
 ((require('codemirror/mode/javascript/javascript')));
 
@@ -32,7 +34,7 @@ function make(value, lang, defaultValue, $staropt$star, $staropt$star$1, onChang
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       return ReasonReact.element(/* None */0, /* None */0, CodeMirror.make(/* None */0, /* Some */[value], defaultValue, /* None */0, onChange, /* Some */[{
-                        mode: _langToMode(lang),
+                        mode: Js_undefined.fromOption(Rebase.Option[/* map */0](_langToMode, lang)),
                         theme: "material",
                         lineNumbers: lineNumbers,
                         readOnly: Js_boolean.to_js_boolean(readOnly),

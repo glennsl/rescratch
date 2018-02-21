@@ -1,3 +1,4 @@
+open Rebase;
 open Vrroom;
 
 [%bs.raw {|require('codemirror/mode/javascript/javascript')|}];
@@ -11,7 +12,7 @@ let _langToMode =
       | `JS => "javascript";
 
 let component = ReasonReact.statelessComponent("Editor");
-let make = (~value, ~lang, ~defaultValue=?, ~lineNumbers=true, ~readOnly=false, ~onChange=?, _:childless) => {
+let make = (~value, ~lang=?, ~defaultValue=?, ~lineNumbers=true, ~readOnly=false, ~onChange=?, _:childless) => {
   ...component,
 
   render: (_self) =>
@@ -20,7 +21,7 @@ let make = (~value, ~lang, ~defaultValue=?, ~lineNumbers=true, ~readOnly=false, 
       ?defaultValue
       ?onChange
       options={
-        "mode":           _langToMode(lang),
+        "mode":           lang |> Option.map(_langToMode) |> Js.Undefined.fromOption,
         "theme":          "material",
         "lineNumbers":    lineNumbers,
         "readOnly":       Js.Boolean.to_js_boolean(readOnly),

@@ -66,6 +66,7 @@ html, body, #root {
 
 .output {
   height: 200px;
+  overflow: scroll;
 
   padding: .5em 1em;
 

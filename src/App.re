@@ -67,7 +67,7 @@ let make = _children => {
   initialState: () => {
     code: getCode(),
     jsCode: "",
-    output: "No output yet"
+    output: ""
   },
   reducer: (action, state) =>
     switch action {
@@ -76,15 +76,16 @@ let make = _children => {
         ({ send }) => persistAndCompile((code, result => send(CompileCompleted(result))))
       )
 
-    | OutputChanged(output) =>
-      Update({ ...state, output })
+    | OutputChanged(value) =>
+      Update({ ...state, output: state.output ++ "\n" ++ value })
 
     | CompileCompleted(jsCode) =>
       UpdateWithSideEffects(
         { ...state, jsCode },
-        ({ state }) => {
+        ({ state, send }) => {
         try {
-          let vm = VM2.makeVM(~requireExternal=`Allow, ~sandbox=Js.Obj.empty());
+          let vm = VM2.makeVM(~console=`Redirect, ~requireExternal=`Allow, ~sandbox=Js.Obj.empty());
+          vm |> VM2.onConsoleLog(value => send(OutputChanged(value)));
           vm |> VM2.run(~code=jsCode, ~filename=jsFilename);
         } {
         | e => Js.log2("error", e)
@@ -99,8 +100,8 @@ let make = _children => {
         <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
         <Editor value=state.jsCode lang=`JS />
       </div>
-      <div className="output">
+      <pre className="output">
         {state.output |> text}
-      </div>
+      </pre>
     </div>
 };

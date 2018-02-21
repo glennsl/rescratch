@@ -96,7 +96,7 @@ function make() {
                       className: "editors"
                     }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* RE */18355, /* None */0, /* None */0, /* Some */[(function (code) {
                                   return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
-                                })], /* array */[])), ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* JS */16585, /* None */0, /* None */0, /* None */0, /* array */[]))), React.createElement("div", {
+                                })], /* array */[])), ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* JS */16585, /* None */0, /* None */0, /* None */0, /* array */[]))), React.createElement("pre", {
                       className: "output"
                     }, Vrroom.text(state[/* output */2])));
     });
@@ -104,7 +104,7 @@ function make() {
       return /* record */[
               /* code */getCode(/* () */0),
               /* jsCode */"",
-              /* output */"No output yet"
+              /* output */""
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {
@@ -131,7 +131,7 @@ function make() {
             return /* Update */Block.__(0, [/* record */[
                         /* code */state[/* code */0],
                         /* jsCode */state[/* jsCode */1],
-                        /* output */action[0]
+                        /* output */state[/* output */2] + ("\n" + action[0])
                       ]]);
         case 2 : 
             var jsCode = action[0];
@@ -141,9 +141,13 @@ function make() {
                         /* jsCode */jsCode,
                         /* output */state[/* output */2]
                       ],
-                      (function () {
+                      (function (param) {
+                          var send = param[/* send */4];
                           try {
-                            var vm = VM2.makeVM(/* Some */[/* Allow */885068905], { });
+                            var vm = VM2.makeVM(/* Some */[/* Redirect */-158682308], /* Some */[/* Allow */885068905], { });
+                            vm.on("console.log", (function (value) {
+                                    return Curry._1(send, /* OutputChanged */Block.__(1, [value]));
+                                  }));
                             vm.run(jsCode, jsFilename);
                             return /* () */0;
                           }

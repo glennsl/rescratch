@@ -75,6 +75,7 @@ module BrowserWindow = {
         ~width=?,
         ~height=?,
         ~pos=`Default,
+        ~autoHideMenuBar=false,
         ()
       ) =>
     make({
@@ -85,7 +86,8 @@ module BrowserWindow = {
       "y": pos |> fun | `Pos(_, y) => y |> Js.Nullable.return
                       | _          => Js.Nullable.undefined,
       "center": pos |> fun | `Center => Js.true_ |> Js.Nullable.return
-                           | _       => Js.Nullable.undefined
+                           | _       => Js.Nullable.undefined,
+      "autoHideMenuBar": Js.Boolean.to_js_boolean(autoHideMenuBar)
     });
   
   [@bs.send.pipe: t]

@@ -9,7 +9,12 @@ let createWindow = () => {
     "defaultHeight": 600
   });
 
-  let win = BrowserWindow.make(~width=windowState##width, ~height=windowState##height, ~pos=`Pos(windowState##x, windowState##y), ());
+  let win = BrowserWindow.make(
+    ~width=windowState##width,
+    ~height=windowState##height,
+    ~pos=`Pos(windowState##x, windowState##y),
+    ~autoHideMenuBar=true,
+  ());
 
   win |> BrowserWindow.loadURL("file://" ++ Node.Path.join2([%node __dirname] |> Js.Option.getExn, "index.html"));
 

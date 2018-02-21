@@ -21,7 +21,7 @@ function createWindow() {
             windowState.x,
             windowState.y
           ]
-        ]], /* () */0);
+        ]], /* Some */[/* true */1], /* () */0);
   win.loadURL("file://" + Path.join(Js_option.getExn(Js_primitive.undefined_to_opt(typeof (__dirname) === "undefined" ? undefined : (__dirname))), "index.html"));
   $$window[0] = /* Some */[win];
   win.on("closed", (function () {

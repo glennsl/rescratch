@@ -8,8 +8,16 @@ html, body, #root {
   height: 100%;
 }
 
-.output {
+.app > .react-codemirror2 {
   flex: 1;
+}
+
+.app > .react-codemirror2 > .CodeMirror {
+  height: 100%;
+}
+
+.output {
+  height: 200px;
 
   padding: .5em 1em;
 

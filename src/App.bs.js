@@ -178,7 +178,7 @@ function make() {
                       /* record */[
                         /* code */state[/* code */0],
                         /* jsCode */jsCode,
-                        /* console */state[/* console */2],
+                        /* console */"",
                         /* activePane : Dom */3406434
                       ],
                       (function (param) {

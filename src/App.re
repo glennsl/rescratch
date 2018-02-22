@@ -92,7 +92,7 @@ let make = _children => {
 
     | CompileCompleted(jsCode) =>
       UpdateWithSideEffects(
-        { ...state, jsCode, activePane: `Dom },
+        { ...state, jsCode, activePane: `Dom, console: "" },
         ({ state, send }) => {
           try {
             let vm = VM2.makeVM(~console=`Redirect, ~requireExternal=`Allow, ~sandbox=Js.Obj.empty());

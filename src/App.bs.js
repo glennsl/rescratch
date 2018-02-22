@@ -16,7 +16,6 @@ var Js_option = require("bs-platform/lib/js/js_option.js");
 var StatusBar = require("./StatusBar.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
-var Child_process = require("child_process");
 
 var appRoot = Process.cwd();
 
@@ -74,10 +73,9 @@ function make(projectPath, execute, output, _) {
           persist(param[0]);
           var $$return = param[1];
           try {
-            Child_process.execSync("bsb -make-world", {
-                  cwd: projectPath
-                });
-            return Curry._1($$return, Fs.readFileSync(jsFilename, "utf8"));
+            return Curry._2(execute, "bsb -make-world", (function () {
+                          return Curry._1($$return, Fs.readFileSync(jsFilename, "utf8"));
+                        }));
           }
           catch (raw_exn){
             var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -135,10 +133,7 @@ function make(projectPath, execute, output, _) {
                             ]
                           ]
                         ], (function (template) {
-                            return Curry._1(send, /* TemplateSelected */Block.__(3, [
-                                          execute,
-                                          template
-                                        ]));
+                            return Curry._1(send, /* TemplateSelected */Block.__(3, [template]));
                           }), state[/* activePane */3], (function (pane) {
                             return Curry._1(send, /* PaneSelected */Block.__(4, [pane]));
                           }), /* array */[])));
@@ -206,7 +201,7 @@ function make(projectPath, execute, output, _) {
                         })
                     ]);
         case 3 : 
-            var template = action[1];
+            var template = action[0];
             return /* UpdateWithSideEffects */Block.__(3, [
                       /* record */[
                         /* code */state[/* code */0],

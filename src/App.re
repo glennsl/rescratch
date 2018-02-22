@@ -15,7 +15,7 @@ type action =
   | CodeChanged(string)
   | ConsoleChanged(string)
   | CompileCompleted(string)
-  | TemplateSelected((string, int => unit) => unit, string)
+  | TemplateSelected(string)
   | PaneSelected([`Js | `Console | `Dom | `Terminal]);
 
 let component = reducerComponent("App");
@@ -58,9 +58,10 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
 
   let compile = (return) => {
     try {
-      Node.Child_process.execSync("bsb -make-world", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
-      let jsCode = Node.Fs.readFileSync(jsFilename, `utf8);
-      return(jsCode);
+      execute("bsb -make-world", _code => { 
+        let jsCode = Node.Fs.readFileSync(jsFilename, `utf8);
+        return(jsCode)
+      });
     } {
     | Js.Exn.Error(e) => return(e |> Js.Exn.message |> Js.Option.getExn)
     }
@@ -104,7 +105,7 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
             }
           })
 
-      | TemplateSelected(execute, template) =>
+      | TemplateSelected(template) =>
         UpdateWithSideEffects(
           { ...state, activePane: `Terminal },
           self => loadTemplate(template, () => getCode(code => self.send(CodeChanged(code))))
@@ -138,7 +139,7 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
         </div>
         <StatusBar
             templates         = ["default", "json", "react"]
-            onSelectTemplate  = (template => send(TemplateSelected(execute, template)))
+            onSelectTemplate  = (template => send(TemplateSelected(template)))
             selectedPane      = state.activePane
             onSelectPane      = (pane => send(PaneSelected(pane))) />
       </div>

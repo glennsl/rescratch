@@ -4,7 +4,8 @@ module Styles = ToolbarStyles;
 module PaneSelectButton = SelectButton.Make({
   type value = [
     | `Js
-    | `Output
+    | `Console
+    | `Dom
   ]
 });
 
@@ -25,8 +26,11 @@ let make = (~onReset, ~selectedPane, ~onSelectPane, _:childless) => {
               label: "JavaScript",
               value: `Js
             }, {
-              label: "Output",
-              value: `Output
+              label: "Console",
+              value: `Console
+            }, {
+              label: "DOM",
+              value: `Dom
             }]
           selected = selectedPane
           onSelect = onSelectPane

@@ -25,10 +25,16 @@ function make(onReset, selectedPane, onSelectPane, _) {
                           ],
                           /* :: */[
                             /* record */[
-                              /* label */"Output",
-                              /* value : Output */-1055554783
+                              /* label */"Console",
+                              /* value : Console */-433646793
                             ],
-                            /* [] */0
+                            /* :: */[
+                              /* record */[
+                                /* label */"DOM",
+                                /* value : Dom */3406434
+                              ],
+                              /* [] */0
+                            ]
                           ]
                         ], selectedPane, /* None */0, /* None */0, /* None */0, onSelectPane, /* array */[])));
     });

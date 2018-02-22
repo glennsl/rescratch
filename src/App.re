@@ -11,7 +11,7 @@ let jsFilename = Node.Path.join([| projectPath, "lib", "js", "src", "main.js" |]
 let resetProject = () => {
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(
-    ~src=Node.Path.join([| appRoot, "templates", "json" |]),
+    ~src=Node.Path.join([| appRoot, "templates", "react" |]),
     ~dest=projectPath
   );
   Node.Child_process.execSync("npm install", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
@@ -36,7 +36,7 @@ let persist = code => {
 
 let compile = (return) => {
   try {
-    Node.Child_process.execSync("bsb", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
+    Node.Child_process.execSync("bsb -make-world", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
     let jsCode = Node.Fs.readFileSync(jsFilename, `utf8);
     return(jsCode);
   } {
@@ -52,15 +52,15 @@ let persistAndCompile = Utils.debounce(((code, return)) => {
 type state = {
   code: string,
   jsCode: string,
-  output: string,
-  activePane: [`Js | `Output]
+  console: string,
+  activePane: [`Js | `Console | `Dom]
 };
 
 type action =
   | CodeChanged(string)
-  | OutputChanged(string)
+  | ConsoleChanged(string)
   | CompileCompleted(string)
-  | PaneSelected([`Js | `Output]);
+  | PaneSelected([`Js | `Console | `Dom]);
 
 let component = reducerComponent("App");
 let make = _children => {
@@ -69,8 +69,8 @@ let make = _children => {
   initialState: () => {
     code: getCode(),
     jsCode: "",
-    output: "",
-    activePane: `Output
+    console: "",
+    activePane: `Console
   },
   reducer: (action, state) =>
     switch action {
@@ -79,8 +79,8 @@ let make = _children => {
         ({ send }) => persistAndCompile((code, result => send(CompileCompleted(result))))
       )
 
-    | OutputChanged(value) =>
-      Update({ ...state, output: state.output ++ "\n" ++ value })
+    | ConsoleChanged(value) =>
+      Update({ ...state, console: state.console ++ "\n" ++ value })
 
     | CompileCompleted(jsCode) =>
       UpdateWithSideEffects(
@@ -88,7 +88,7 @@ let make = _children => {
         ({ state, send }) => {
         try {
           let vm = VM2.makeVM(~console=`Redirect, ~requireExternal=`Allow, ~sandbox=Js.Obj.empty());
-          vm |> VM2.onConsoleLog(value => send(OutputChanged(value)));
+          vm |> VM2.onConsoleLog(value => send(ConsoleChanged(value)));
           vm |> VM2.run(~code=jsCode, ~filename=jsFilename);
         } {
         | e => Js.log2("error", e)
@@ -101,16 +101,20 @@ let make = _children => {
 
   render: ({ state, send }) =>
     <div className="app">
-      <div className="editors">
+      <div className="output">
         <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
         {switch (state.activePane) {
-        | `Js     => <Editor value=state.jsCode lang=`JS lineNumbers=false />
-        | `Output => <Editor value=state.output lineNumbers=false />
+        | `Js       => <Editor value=state.jsCode lang=`JS lineNumbers=false />
+        | `Console  => <Editor value=state.console lineNumbers=false />
+        | `Dom      => nothing
         }}
+        <div className=ClassName.(join(["dom", "s-selected" |> if_(state.activePane == `Dom)]))>
+          <div id="dom-root" />
+        </div>
       </div>
       <StatusBar
           onReset       = resetProject
           selectedPane  = state.activePane
-          onSelectPane  = (pane => send(PaneSelected(pane)))/>
+          onSelectPane  = (pane => send(PaneSelected(pane))) />
     </div>
 };

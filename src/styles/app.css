@@ -80,32 +80,34 @@ html, body, #root {
   overflow: hidden;
 }
 
-.app > .editors {
+.app > .output {
   display: flex;
   flex: 1;
 }
 
-.app > .editors > .react-codemirror2 {
+.app > .output > * {
   width: 50%;
 }
-.app > .editors > .react-codemirror2:first-child {
+.app > .output > .react-codemirror2:first-child {
   border-right: 1px solid var(--main-background-color);
 }
 
-.app > .editors > .react-codemirror2 > .CodeMirror {
+.app > .output > .react-codemirror2 > .CodeMirror {
   min-height: 100%;
   font-family: var(--monospace-font-families);
   font-size: 13px;
 }
 
-.output {
-  height: 200px;
-  overflow: auto;
+.app > .output > .dom {
+  display: none;
+}
 
-  padding: .5em 1em;
-
-  font-family: var(--monospace-font-families);
-  font-size: 13px;
-  background-color: var(--main-background-color);
+.app > .output > .dom.s-selected {
+  display: block;
+}
+.app > .output > .dom button {
   color: var(--text-color);
+  padding: .5em 1em;
+  cursor: pointer;
+  background: var(--panel-background-color);
 }

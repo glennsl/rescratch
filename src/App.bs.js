@@ -9,6 +9,7 @@ var Utils = require("./Utils.bs.js");
 var React = require("react");
 var Editor = require("./Editor.bs.js");
 var Js_exn = require("bs-platform/lib/js/js_exn.js");
+var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var Process = require("process");
 var Electron = require("./bindings/Electron.bs.js");
 var FsExtra = require("fs-extra");
@@ -28,7 +29,7 @@ var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
 
 function resetProject() {
   FsExtra.removeSync(projectPath);
-  FsExtra.copySync(Path.join(appRoot, "templates", "json"), projectPath);
+  FsExtra.copySync(Path.join(appRoot, "templates", "react"), projectPath);
   Child_process.execSync("npm install", {
         cwd: projectPath
       });
@@ -60,7 +61,7 @@ function persist(code) {
 
 function compile($$return) {
   try {
-    Child_process.execSync("bsb", {
+    Child_process.execSync("bsb -make-world", {
           cwd: projectPath
         });
     return Curry._1($$return, Fs.readFileSync(jsFilename, "utf8"));
@@ -91,10 +92,22 @@ function make() {
       return React.createElement("div", {
                   className: "app"
                 }, React.createElement("div", {
-                      className: "editors"
+                      className: "output"
                     }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* Some */[/* RE */18355], /* None */0, /* None */0, /* None */0, /* Some */[(function (code) {
                                   return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
-                                })], /* array */[])), match >= 16617 ? ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])) : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* output */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(resetProject, state[/* activePane */3], (function (pane) {
+                                })], /* array */[])), match !== 16617 ? (
+                        match >= 3406434 ? Vrroom.nothing : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* console */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))
+                      ) : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])), React.createElement("div", {
+                          className: Curry._1(Vrroom.Helpers[/* ClassName */5][/* join */0], /* :: */[
+                                "dom",
+                                /* :: */[
+                                  Curry._2(Vrroom.Helpers[/* ClassName */5][/* if_ */1], +(state[/* activePane */3] === /* Dom */3406434), "s-selected"),
+                                  /* [] */0
+                                ]
+                              ])
+                        }, React.createElement("div", {
+                              id: "dom-root"
+                            }))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(resetProject, state[/* activePane */3], (function (pane) {
                             return Curry._1(send, /* PaneSelected */Block.__(3, [pane]));
                           }), /* array */[])));
     });
@@ -102,8 +115,8 @@ function make() {
       return /* record */[
               /* code */getCode(/* () */0),
               /* jsCode */"",
-              /* output */"",
-              /* activePane : Output */-1055554783
+              /* console */"",
+              /* activePane : Console */-433646793
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {
@@ -114,7 +127,7 @@ function make() {
                       /* record */[
                         /* code */code,
                         /* jsCode */state[/* jsCode */1],
-                        /* output */state[/* output */2],
+                        /* console */state[/* console */2],
                         /* activePane */state[/* activePane */3]
                       ],
                       (function (param) {
@@ -131,7 +144,7 @@ function make() {
             return /* Update */Block.__(0, [/* record */[
                         /* code */state[/* code */0],
                         /* jsCode */state[/* jsCode */1],
-                        /* output */state[/* output */2] + ("\n" + action[0]),
+                        /* console */state[/* console */2] + ("\n" + action[0]),
                         /* activePane */state[/* activePane */3]
                       ]]);
         case 2 : 
@@ -140,7 +153,7 @@ function make() {
                       /* record */[
                         /* code */state[/* code */0],
                         /* jsCode */jsCode,
-                        /* output */state[/* output */2],
+                        /* console */state[/* console */2],
                         /* activePane */state[/* activePane */3]
                       ],
                       (function (param) {
@@ -148,7 +161,7 @@ function make() {
                           try {
                             var vm = VM2.makeVM(/* Some */[/* Redirect */-158682308], /* Some */[/* Allow */885068905], { });
                             vm.on("console.log", (function (value) {
-                                    return Curry._1(send, /* OutputChanged */Block.__(1, [value]));
+                                    return Curry._1(send, /* ConsoleChanged */Block.__(1, [value]));
                                   }));
                             vm.run(jsCode, jsFilename);
                             return /* () */0;
@@ -164,7 +177,7 @@ function make() {
             return /* Update */Block.__(0, [/* record */[
                         /* code */state[/* code */0],
                         /* jsCode */state[/* jsCode */1],
-                        /* output */state[/* output */2],
+                        /* console */state[/* console */2],
                         /* activePane */action[0]
                       ]]);
         

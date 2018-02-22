@@ -53,14 +53,14 @@ type state = {
   code: string,
   jsCode: string,
   console: string,
-  activePane: [`Js | `Console | `Dom]
+  activePane: [`Js | `Console | `Dom | `Terminal]
 };
 
 type action =
   | CodeChanged(string)
   | ConsoleChanged(string)
   | CompileCompleted(string)
-  | PaneSelected([`Js | `Console | `Dom]);
+  | PaneSelected([`Js | `Console | `Dom | `Terminal]);
 
 let component = reducerComponent("App");
 let make = _children => {
@@ -70,7 +70,7 @@ let make = _children => {
     code: getCode(),
     jsCode: "",
     console: "",
-    activePane: `Console
+    activePane: `Terminal
   },
   reducer: (action, state) =>
     switch action {
@@ -106,6 +106,7 @@ let make = _children => {
         {switch (state.activePane) {
         | `Js       => <Editor value=state.jsCode lang=`JS lineNumbers=false />
         | `Console  => <Editor value=state.console lineNumbers=false />
+        | `Terminal => <Terminal dir=projectPath />
         | `Dom      => nothing
         }}
         <div className=ClassName.(join(["dom", "s-selected" |> if_(state.activePane == `Dom)]))>

@@ -33,7 +33,13 @@ function make(onReset, selectedPane, onSelectPane, _) {
                                 /* label */"DOM",
                                 /* value : Dom */3406434
                               ],
-                              /* [] */0
+                              /* :: */[
+                                /* record */[
+                                  /* label */"Terminal",
+                                  /* value : Terminal */-912466532
+                                ],
+                                /* [] */0
+                              ]
                             ]
                           ]
                         ], selectedPane, /* None */0, /* None */0, /* None */0, onSelectPane, /* array */[])));

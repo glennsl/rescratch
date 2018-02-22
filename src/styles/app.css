@@ -17,6 +17,7 @@ html, body, #root {
   color: var(--text-color);
 }
 
+
 .c-button, .c-select-button button {
   color: var(--text-color);
   padding: .5em 1em;
@@ -36,6 +37,7 @@ html, body, #root {
 .c-button:hover {
   background: var(--highlight-overlay-color);
 }
+
 
 .c-select-button {
   display: inline-block;
@@ -63,6 +65,7 @@ html, body, #root {
   display: block;
 }
 
+
 .c-statusbar {
   display: flex;
 
@@ -73,12 +76,35 @@ html, body, #root {
   flex: auto;
 }
 
+
+.c-terminal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  background: var(--panel-background-color);
+}
+.c-terminal > .react-codemirror2 {
+}
+.c-terminal > .react-codemirror2 > .CodeMirror {
+  height: auto;
+}
+.c-terminal > input {
+  width: 100%;
+  color: var(--text-color);
+  padding: .5em 1em;
+  background: var(--panel-background-color);
+  border-top: 1px solid var(--main-background-color);
+}
+
+
 .app {
   display: flex;
   flex-direction: column;
-  height: 100%;
   overflow: hidden;
+  height: 100%;
 }
+
 
 .app > .output {
   display: flex;

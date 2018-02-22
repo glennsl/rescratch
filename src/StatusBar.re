@@ -6,6 +6,7 @@ module PaneSelectButton = SelectButton.Make({
     | `Js
     | `Console
     | `Dom
+    | `Terminal
   ]
 });
 
@@ -31,6 +32,9 @@ let make = (~onReset, ~selectedPane, ~onSelectPane, _:childless) => {
             }, {
               label: "DOM",
               value: `Dom
+            }, {
+              label: "Terminal",
+              value: `Terminal
             }]
           selected = selectedPane
           onSelect = onSelectPane

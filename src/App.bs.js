@@ -12,6 +12,7 @@ var Js_exn = require("bs-platform/lib/js/js_exn.js");
 var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var Process = require("process");
 var Electron = require("./bindings/Electron.bs.js");
+var Terminal = require("./Terminal.bs.js");
 var FsExtra = require("fs-extra");
 var Js_option = require("bs-platform/lib/js/js_option.js");
 var StatusBar = require("./StatusBar.bs.js");
@@ -95,9 +96,11 @@ function make() {
                       className: "output"
                     }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* Some */[/* RE */18355], /* None */0, /* None */0, /* None */0, /* Some */[(function (code) {
                                   return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
-                                })], /* array */[])), match !== 16617 ? (
-                        match >= 3406434 ? Vrroom.nothing : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* console */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))
-                      ) : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])), React.createElement("div", {
+                                })], /* array */[])), match >= 16617 ? (
+                        match >= 3406434 ? Vrroom.nothing : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))
+                      ) : (
+                        match >= -433646793 ? ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* console */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])) : ReasonReact.element(/* None */0, /* None */0, Terminal.make(projectPath, /* array */[]))
+                      ), React.createElement("div", {
                           className: Curry._1(Vrroom.Helpers[/* ClassName */5][/* join */0], /* :: */[
                                 "dom",
                                 /* :: */[
@@ -116,7 +119,7 @@ function make() {
               /* code */getCode(/* () */0),
               /* jsCode */"",
               /* console */"",
-              /* activePane : Console */-433646793
+              /* activePane : Terminal */-912466532
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {

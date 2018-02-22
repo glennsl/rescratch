@@ -20,10 +20,19 @@ function handleKeyDown(send, e) {
 
 function execute(send, cwd, command) {
   try {
-    var result = Child_process.execSync(command, {
-          cwd: cwd
+    var $$process = Child_process.spawn(command, /* array */[], {
+          cwd: cwd,
+          shell: true
         });
-    return Curry._1(send, /* OutputChanged */Block.__(1, [result]));
+    var stdout = $$process.stdout;
+    var stderr = $$process.stderr;
+    stdout.on("data", (function (data) {
+            return Curry._1(send, /* OutputChanged */Block.__(1, [data]));
+          }));
+    stderr.on("data", (function (data) {
+            return Curry._1(send, /* OutputChanged */Block.__(1, [data]));
+          }));
+    return /* () */0;
   }
   catch (raw_e){
     var e = Js_exn.internalToOCamlException(raw_e);

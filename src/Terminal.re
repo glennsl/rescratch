@@ -20,8 +20,12 @@ let handleKeyDown(send, e) {
 
 let execute(send, cwd, command) {
   try {
-    let result = Node.Child_process.execSync(command, Node.Child_process.option(~cwd, ()));
-    send(OutputChanged(result));
+
+    let process = NodeChildProcess.spawn(command, ~args=[||], ~options=NodeChildProcess.options(~cwd, ~shell=Js.true_, ()));
+    let stdout = process |> NodeChildProcess.stdout;
+    let stderr = process |> NodeChildProcess.stderr;
+    stdout |> NodeChildProcess.ReadableStream.onData(data => send(OutputChanged(data)));
+    stderr |> NodeChildProcess.ReadableStream.onData(data => send(OutputChanged(data)));
   } {
     | Js.Exn.Error(e) => send(OutputChanged(e |> Js.Exn.message |> Js.Option.getExn))
     | e => send(OutputChanged("Error:\n" ++ Js.String.make(e)))

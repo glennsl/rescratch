@@ -1,5 +1,8 @@
 open! Vrroom;
-module Styles = ToolbarStyles;
+
+module TemplateSelectButton = SelectButton.Make({
+  type value = string
+});
 
 module PaneSelectButton = SelectButton.Make({
   type value = [
@@ -11,14 +14,17 @@ module PaneSelectButton = SelectButton.Make({
 });
 
 let component = ReasonReact.statelessComponent("Toolbar");
-let make = (~onReset, ~selectedPane, ~onSelectPane, _:childless) => {
+let make = (~templates, ~onSelectTemplate, ~selectedPane, ~onSelectPane, _:childless) => {
   ...component,
   render: _self =>
     <div className="c-statusbar">
 
-      <Button icon    = <MaterialUIIcons.Delete />
-              label   = "Reset"
-              onClick = onReset />
+      <TemplateSelectButton
+          items             = (templates |> List.map(value => TemplateSelectButton.{ label: value, value }))
+          selected          = "default"
+          renderButtonLabel = (_item => "Load" |> text)
+          onSelect          = onSelectTemplate
+        />
 
       <div className="separator" />
 
@@ -38,6 +44,7 @@ let make = (~onReset, ~selectedPane, ~onSelectPane, _:childless) => {
             }]
           selected = selectedPane
           onSelect = onSelectPane
+          align    = `Right
         />
 
     </div>

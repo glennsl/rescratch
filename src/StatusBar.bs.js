@@ -1,24 +1,33 @@
 'use strict';
 
+var List = require("bs-platform/lib/js/list.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
-var Button = require("./common/Button.bs.js");
+var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var SelectButton = require("./common/SelectButton.bs.js");
-var MaterialUIIcons = require("bs-material-ui-icons/src/MaterialUIIcons.js");
+
+var TemplateSelectButton = SelectButton.Make(/* module */[]);
 
 var PaneSelectButton = SelectButton.Make(/* module */[]);
 
 var component = ReasonReact.statelessComponent("Toolbar");
 
-function make(onReset, selectedPane, onSelectPane, _) {
+function make(templates, onSelectTemplate, selectedPane, onSelectPane, _) {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       return React.createElement("div", {
                   className: "c-statusbar"
-                }, ReasonReact.element(/* None */0, /* None */0, Button.make("Reset", /* Some */[ReasonReact.element(/* None */0, /* None */0, MaterialUIIcons.Delete[/* make */0](/* array */[]))], /* None */0, /* None */0, /* None */0, onReset, /* array */[])), React.createElement("div", {
+                }, ReasonReact.element(/* None */0, /* None */0, Curry._8(TemplateSelectButton[/* make */1], List.map((function (value) {
+                                return /* record */[
+                                        /* label */value,
+                                        /* value */value
+                                      ];
+                              }), templates), "default", /* None */0, /* Some */[(function () {
+                              return Vrroom.text("Load");
+                            })], /* None */0, /* None */0, onSelectTemplate, /* array */[])), React.createElement("div", {
                       className: "separator"
-                    }), ReasonReact.element(/* None */0, /* None */0, Curry._7(PaneSelectButton[/* make */1], /* :: */[
+                    }), ReasonReact.element(/* None */0, /* None */0, Curry._8(PaneSelectButton[/* make */1], /* :: */[
                           /* record */[
                             /* label */"JavaScript",
                             /* value : Js */16617
@@ -42,15 +51,13 @@ function make(onReset, selectedPane, onSelectPane, _) {
                               ]
                             ]
                           ]
-                        ], selectedPane, /* None */0, /* None */0, /* None */0, onSelectPane, /* array */[])));
+                        ], selectedPane, /* None */0, /* None */0, /* None */0, /* Some */[/* Right */-57574468], onSelectPane, /* array */[])));
     });
   return newrecord;
 }
 
-var Styles = 0;
-
-exports.Styles = Styles;
+exports.TemplateSelectButton = TemplateSelectButton;
 exports.PaneSelectButton = PaneSelectButton;
 exports.component = component;
 exports.make = make;
-/* PaneSelectButton Not a pure module */
+/* TemplateSelectButton Not a pure module */

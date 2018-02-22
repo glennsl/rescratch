@@ -28,8 +28,8 @@ var sourceFilename = Path.join(projectPath, "src", "main.re");
 
 var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
 
-function resetProject(execute, callback, _) {
-  var templatePath = Path.join(appRoot, "templates", "react");
+function loadProject(execute, callback, template) {
+  var templatePath = Path.join(appRoot, "templates", template);
   return Curry._2(execute, "rm -rf *", (function () {
                 return Curry._2(execute, "cp -R \"" + (String(templatePath) + ("/.\" \"" + (String(projectPath) + "\""))), (function () {
                               return Curry._2(execute, "npm install", (function () {
@@ -117,8 +117,17 @@ function make() {
                                                     /* [] */0
                                                   ]
                                                 ])
-                                          }, ReasonReact.element(/* None */0, /* None */0, Terminal.make(execute, output, /* array */[])))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make((function (param) {
-                                              return resetProject(execute, (function () {
+                                          }, ReasonReact.element(/* None */0, /* None */0, Terminal.make(execute, output, /* array */[])))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(/* :: */[
+                                            "default",
+                                            /* :: */[
+                                              "json",
+                                              /* :: */[
+                                                "react",
+                                                /* [] */0
+                                              ]
+                                            ]
+                                          ], (function (param) {
+                                              return loadProject(execute, (function () {
                                                             return Curry._1(send, /* CodeChanged */Block.__(0, [getCode(/* () */0)]));
                                                           }), param);
                                             }), state[/* activePane */3], (function (pane) {
@@ -205,7 +214,7 @@ exports.appRoot = appRoot;
 exports.projectPath = projectPath;
 exports.sourceFilename = sourceFilename;
 exports.jsFilename = jsFilename;
-exports.resetProject = resetProject;
+exports.loadProject = loadProject;
 exports.getCode = getCode;
 exports.persist = persist;
 exports.compile = compile;

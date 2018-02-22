@@ -8,7 +8,7 @@ let projectPath = Node.Path.join2(Electron.Remote.App.getPath(`UserData), "curre
 let sourceFilename = Node.Path.join([| projectPath, "src", "main.re" |]);
 let jsFilename = Node.Path.join([| projectPath, "lib", "js", "src", "main.js" |]);
 
-let resetProject = (execute, callback) => () => {
+let loadProject = (execute, callback, template) => {
   /* TODO: Might want to use this instead for cross-platform support...
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(
@@ -17,7 +17,7 @@ let resetProject = (execute, callback) => () => {
   );
   */
 
-  let templatePath = Node.Path.join([| appRoot, "templates", "react" |]);
+  let templatePath = Node.Path.join([| appRoot, "templates", template |]);
   execute("rm -rf *", _code => 
   execute({j|cp -R "$templatePath/." "$projectPath"|j}, _code => 
   execute("npm install", _code => 
@@ -124,9 +124,10 @@ let make = _children => {
             </div>
           </div>
           <StatusBar
-              onReset       = resetProject(execute, () => send(CodeChanged(getCode())))
-              selectedPane  = state.activePane
-              onSelectPane  = (pane => send(PaneSelected(pane))) />
+              templates         = ["default", "json", "react"]
+              onSelectTemplate  = loadProject(execute, () => send(CodeChanged(getCode())))
+              selectedPane      = state.activePane
+              onSelectPane      = (pane => send(PaneSelected(pane))) />
         </div>
       )
     </ExecutionEnvironment>

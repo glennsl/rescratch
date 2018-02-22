@@ -1,6 +1,5 @@
 open Rebase;
 open Vrroom;
-module Styles = SelectButtonStyles;
 
 module type Config = {
   type value;
@@ -28,6 +27,7 @@ module Make(Config: Config) = {
               ~className          = "",
               ~renderButtonLabel  = item => item.label |> text,
               ~renderItem         = item => item.label |> text,
+              ~align              = `Left,
               ~onSelect,
               _:childless) => {
     ...component,
@@ -51,7 +51,7 @@ module Make(Config: Config) = {
       },
 
     render: ({ send, state }) =>
-      <div className=ClassName.(join(["c-select-button", "s-open" |> if_(state.isMenuOpen)]))>
+      <div className=ClassName.(join(["c-select-button", "s-open" |> if_(state.isMenuOpen), "m-align-right" |> if_(align === `Right)]))>
         <OnClickOutside onClick={() =>send(OutsideClicked)}>
            
           <button className onClick={_e => send(ButtonClicked)}>

@@ -34,7 +34,7 @@ html, body, #root {
   width: 16px;
   height: 16px;
 }
-.c-button:hover {
+.c-button:hover, .c-select-button button:hover {
   background: var(--highlight-overlay-color);
 }
 
@@ -47,7 +47,6 @@ html, body, #root {
   display: none;
   position: absolute;
   bottom: 100%;
-  right: 0;
   z-index: 100;
   transform: translateX(-2);
   background: var(--dark-background-color);
@@ -56,10 +55,13 @@ html, body, #root {
 .c-select-button menu > ul > li {
   padding: 1em;
   cursor: pointer;
-  text-align: right;
 }
 .c-select-button menu > ul > li:hover {
   background: var(--highlight-overlay-color);
+}
+.c-select-button.m-align-right menu {
+  text-align: right;
+  right: 0;
 }
 .c-select-button.s-open menu {
   display: block;

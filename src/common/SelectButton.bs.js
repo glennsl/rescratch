@@ -10,7 +10,7 @@ var OnClickOutside = require("./OnClickOutside.bs.js");
 
 function Make() {
   var component = ReasonReact.reducerComponent("SelectButton");
-  var make = function (items, selected, $staropt$star, $staropt$star$1, $staropt$star$2, onSelect, _) {
+  var make = function (items, selected, $staropt$star, $staropt$star$1, $staropt$star$2, $staropt$star$3, onSelect, _) {
     var className = $staropt$star ? $staropt$star[0] : "";
     var renderButtonLabel = $staropt$star$1 ? $staropt$star$1[0] : (function (item) {
           return Vrroom.text(item[/* label */0]);
@@ -18,6 +18,7 @@ function Make() {
     var renderItem = $staropt$star$2 ? $staropt$star$2[0] : (function (item) {
           return Vrroom.text(item[/* label */0]);
         });
+    var align = $staropt$star$3 ? $staropt$star$3[0] : /* Left */847852583;
     var newrecord = component.slice();
     newrecord[/* render */9] = (function (param) {
         var send = param[/* send */4];
@@ -26,7 +27,10 @@ function Make() {
                           "c-select-button",
                           /* :: */[
                             Curry._2(Vrroom.Helpers[/* ClassName */5][/* if_ */1], param[/* state */2][/* isMenuOpen */0], "s-open"),
-                            /* [] */0
+                            /* :: */[
+                              Curry._2(Vrroom.Helpers[/* ClassName */5][/* if_ */1], +(align === /* Right */-57574468), "m-align-right"),
+                              /* [] */0
+                            ]
                           ]
                         ])
                   }, ReasonReact.element(/* None */0, /* None */0, OnClickOutside.make((function () {
@@ -78,8 +82,5 @@ function Make() {
         ];
 }
 
-var Styles = 0;
-
-exports.Styles = Styles;
 exports.Make = Make;
 /* react Not a pure module */

@@ -119,7 +119,7 @@ let make = _children => {
             <div className=ClassName.(join(["dom", "s-selected" |> if_(state.activePane == `Dom)]))>
               <div id="dom-root" />
             </div>
-            <div className=ClassName.(join(["terminal", "s-selected" |> if_(state.activePane == `Dom)]))>
+            <div className=ClassName.(join(["terminal", "s-selected" |> if_(state.activePane == `Terminal)]))>
               <Terminal onExecute=execute output=output />
             </div>
           </div>

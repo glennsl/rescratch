@@ -113,7 +113,7 @@ function make() {
                                             className: Curry._1(Vrroom.Helpers[/* ClassName */5][/* join */0], /* :: */[
                                                   "terminal",
                                                   /* :: */[
-                                                    Curry._2(Vrroom.Helpers[/* ClassName */5][/* if_ */1], +(state[/* activePane */3] === /* Dom */3406434), "s-selected"),
+                                                    Curry._2(Vrroom.Helpers[/* ClassName */5][/* if_ */1], +(state[/* activePane */3] === /* Terminal */-912466532), "s-selected"),
                                                     /* [] */0
                                                   ]
                                                 ])

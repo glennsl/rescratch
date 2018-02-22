@@ -135,8 +135,13 @@ html, body, #root {
 .app > .main > .dom {
   display: none;
 }
-
 .app > .main > .dom.s-selected {
+  display: block;
+}
+.app > .main > .terminal {
+  display: none;
+}
+.app > .main > .terminal.s-selected {
   display: block;
 }
 .app > .main > .dom button {

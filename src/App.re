@@ -66,6 +66,7 @@ type action =
   | CodeChanged(string)
   | ConsoleChanged(string)
   | CompileCompleted(string)
+  | TemplateSelected((string, int => unit) => unit, string)
   | PaneSelected([`Js | `Console | `Dom | `Terminal]);
 
 let component = reducerComponent("App");
@@ -76,30 +77,38 @@ let make = _children => {
     code: getCode(),
     jsCode: "",
     console: "",
-    activePane: `Terminal
+    activePane: `Console
   },
   reducer: (action, state) =>
     switch action {
-    | CodeChanged(code) => UpdateWithSideEffects(
+    | CodeChanged(code) =>
+      UpdateWithSideEffects(
         { ...state, code },
         ({ send }) => persistAndCompile((code, result => send(CompileCompleted(result))))
       )
 
     | ConsoleChanged(value) =>
-      Update({ ...state, console: state.console ++ "\n" ++ value })
+      Update({ ...state, activePane: `Console, console: state.console ++ "\n" ++ value })
 
     | CompileCompleted(jsCode) =>
       UpdateWithSideEffects(
-        { ...state, jsCode },
+        { ...state, jsCode, activePane: `Dom },
         ({ state, send }) => {
-        try {
-          let vm = VM2.makeVM(~console=`Redirect, ~requireExternal=`Allow, ~sandbox=Js.Obj.empty());
-          vm |> VM2.onConsoleLog(value => send(ConsoleChanged(value)));
-          vm |> VM2.run(~code=jsCode, ~filename=jsFilename);
-        } {
-        | e => Js.log2("error", e)
-        }
-      })
+          try {
+            let vm = VM2.makeVM(~console=`Redirect, ~requireExternal=`Allow, ~sandbox=Js.Obj.empty());
+            vm |> VM2.onConsoleLog(value => send(ConsoleChanged(value)));
+            vm |> VM2.run(~code=jsCode, ~filename=jsFilename);
+          } {
+          | e => Js.log2("error", e)
+          }
+        })
+
+    | TemplateSelected(execute, template) =>
+      UpdateWithSideEffects(
+        { ...state, activePane: `Terminal },
+        self => loadProject(execute, () => self.send(CodeChanged(getCode())), template)
+      )
+      
 
     | PaneSelected(pane) =>
       Update({ ...state, activePane: pane })
@@ -125,7 +134,7 @@ let make = _children => {
           </div>
           <StatusBar
               templates         = ["default", "json", "react"]
-              onSelectTemplate  = loadProject(execute, () => send(CodeChanged(getCode())))
+              onSelectTemplate  = (template => send(TemplateSelected(execute, template)))
               selectedPane      = state.activePane
               onSelectPane      = (pane => send(PaneSelected(pane))) />
         </div>

@@ -126,12 +126,13 @@ function make() {
                                                 /* [] */0
                                               ]
                                             ]
-                                          ], (function (param) {
-                                              return loadProject(execute, (function () {
-                                                            return Curry._1(send, /* CodeChanged */Block.__(0, [getCode(/* () */0)]));
-                                                          }), param);
+                                          ], (function (template) {
+                                              return Curry._1(send, /* TemplateSelected */Block.__(3, [
+                                                            execute,
+                                                            template
+                                                          ]));
                                             }), state[/* activePane */3], (function (pane) {
-                                              return Curry._1(send, /* PaneSelected */Block.__(3, [pane]));
+                                              return Curry._1(send, /* PaneSelected */Block.__(4, [pane]));
                                             }), /* array */[])));
                       })));
     });
@@ -140,7 +141,7 @@ function make() {
               /* code */getCode(/* () */0),
               /* jsCode */"",
               /* console */"",
-              /* activePane : Terminal */-912466532
+              /* activePane : Console */-433646793
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {
@@ -169,7 +170,7 @@ function make() {
                         /* code */state[/* code */0],
                         /* jsCode */state[/* jsCode */1],
                         /* console */state[/* console */2] + ("\n" + action[0]),
-                        /* activePane */state[/* activePane */3]
+                        /* activePane : Console */-433646793
                       ]]);
         case 2 : 
             var jsCode = action[0];
@@ -178,7 +179,7 @@ function make() {
                         /* code */state[/* code */0],
                         /* jsCode */jsCode,
                         /* console */state[/* console */2],
-                        /* activePane */state[/* activePane */3]
+                        /* activePane : Dom */3406434
                       ],
                       (function (param) {
                           var send = param[/* send */4];
@@ -198,6 +199,22 @@ function make() {
                         })
                     ]);
         case 3 : 
+            var template = action[1];
+            var execute = action[0];
+            return /* UpdateWithSideEffects */Block.__(3, [
+                      /* record */[
+                        /* code */state[/* code */0],
+                        /* jsCode */state[/* jsCode */1],
+                        /* console */state[/* console */2],
+                        /* activePane : Terminal */-912466532
+                      ],
+                      (function (self) {
+                          return loadProject(execute, (function () {
+                                        return Curry._1(self[/* send */4], /* CodeChanged */Block.__(0, [getCode(/* () */0)]));
+                                      }), template);
+                        })
+                    ]);
+        case 4 : 
             return /* Update */Block.__(0, [/* record */[
                         /* code */state[/* code */0],
                         /* jsCode */state[/* jsCode */1],

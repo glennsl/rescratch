@@ -89,12 +89,20 @@ html, body, #root {
 .c-terminal > .react-codemirror2 > .CodeMirror {
   height: auto;
 }
-.c-terminal > input {
-  width: 100%;
-  color: var(--text-color);
-  padding: .5em 1em;
+.c-terminal > .command-line {
+  display: flex;
+  align-items: baseline;
+  padding: .5em;
   background: var(--panel-background-color);
   border-top: 1px solid var(--main-background-color);
+}
+.c-terminal > .command-line > .prompt {
+  display: inline-block;
+  padding-right: .5em;
+}
+.c-terminal > .command-line > input {
+  width: 100%;
+  color: var(--text-color);
 }
 
 

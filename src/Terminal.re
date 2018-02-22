@@ -39,10 +39,13 @@ let make = (~onExecute, ~output, _:childless) => {
               readOnly    = true
               lineNumbers = false />
 
-      <input  _type     = "text"
-              value     = state.command
-              onKeyDown = (e => handleKeyDown(send, e))
-              onChange  = (e => send(CommandChanged((e |> ReactEventRe.Form.target |> ReactDOMRe.domElementToObj)##value))) />
+      <div className="command-line">
+        <span className="prompt"> {">" |> text} </span>
+        <input  _type     = "text"
+                value     = state.command
+                onKeyDown = (e => handleKeyDown(send, e))
+                onChange  = (e => send(CommandChanged((e |> ReactEventRe.Form.target |> ReactDOMRe.domElementToObj)##value))) />
+      </div>
 
     </div>
 }

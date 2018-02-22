@@ -4,6 +4,7 @@ var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Editor = require("./Editor.bs.js");
+var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 
 function handleKeyDown(send, e) {
@@ -22,16 +23,20 @@ function make(onExecute, output, _) {
       var send = param[/* send */4];
       return React.createElement("div", {
                   className: "c-terminal"
-                }, ReasonReact.element(/* None */0, /* None */0, Editor.make(output, /* None */0, /* None */0, /* Some */[/* false */0], /* Some */[/* true */1], /* None */0, /* array */[])), React.createElement("input", {
-                      type: "text",
-                      value: param[/* state */2][/* command */0],
-                      onKeyDown: (function (e) {
-                          return handleKeyDown(send, e);
-                        }),
-                      onChange: (function (e) {
-                          return Curry._1(send, /* CommandChanged */[e.target.value]);
-                        })
-                    }));
+                }, ReasonReact.element(/* None */0, /* None */0, Editor.make(output, /* None */0, /* None */0, /* Some */[/* false */0], /* Some */[/* true */1], /* None */0, /* array */[])), React.createElement("div", {
+                      className: "command-line"
+                    }, React.createElement("span", {
+                          className: "prompt"
+                        }, Vrroom.text(">")), React.createElement("input", {
+                          type: "text",
+                          value: param[/* state */2][/* command */0],
+                          onKeyDown: (function (e) {
+                              return handleKeyDown(send, e);
+                            }),
+                          onChange: (function (e) {
+                              return Curry._1(send, /* CommandChanged */[e.target.value]);
+                            })
+                        })));
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[/* command */""];

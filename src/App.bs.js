@@ -19,6 +19,7 @@ var StatusBar = require("./StatusBar.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
 var Child_process = require("child_process");
+var ExecutionEnvironment = require("./ExecutionEnvironment.bs.js");
 
 var appRoot = Process.cwd();
 
@@ -28,16 +29,11 @@ var sourceFilename = Path.join(projectPath, "src", "main.re");
 
 var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
 
-function resetProject() {
+function resetProject(execute, _) {
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(Path.join(appRoot, "templates", "react"), projectPath);
-  Child_process.execSync("npm install", {
-        cwd: projectPath
-      });
-  Child_process.execSync("npm link bs-platform", {
-        cwd: projectPath
-      });
-  return /* () */0;
+  Curry._1(execute, "npm install");
+  return Curry._1(execute, "npm link bs-platform");
 }
 
 function getCode() {
@@ -45,7 +41,6 @@ function getCode() {
     return Fs.readFileSync(sourceFilename, "utf8");
   }
   catch (exn){
-    resetProject(/* () */0);
     try {
       return Fs.readFileSync(sourceFilename, "utf8");
     }
@@ -89,30 +84,40 @@ function make() {
   newrecord[/* render */9] = (function (param) {
       var send = param[/* send */4];
       var state = param[/* state */2];
-      var match = state[/* activePane */3];
-      return React.createElement("div", {
-                  className: "app"
-                }, React.createElement("div", {
-                      className: "output"
-                    }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* Some */[/* RE */18355], /* None */0, /* None */0, /* None */0, /* Some */[(function (code) {
-                                  return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
-                                })], /* array */[])), match >= 16617 ? (
-                        match >= 3406434 ? Vrroom.nothing : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))
-                      ) : (
-                        match >= -433646793 ? ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* console */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])) : ReasonReact.element(/* None */0, /* None */0, Terminal.make(projectPath, /* array */[]))
-                      ), React.createElement("div", {
-                          className: Curry._1(Vrroom.Helpers[/* ClassName */5][/* join */0], /* :: */[
-                                "dom",
-                                /* :: */[
-                                  Curry._2(Vrroom.Helpers[/* ClassName */5][/* if_ */1], +(state[/* activePane */3] === /* Dom */3406434), "s-selected"),
-                                  /* [] */0
-                                ]
-                              ])
-                        }, React.createElement("div", {
-                              id: "dom-root"
-                            }))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(resetProject, state[/* activePane */3], (function (pane) {
-                            return Curry._1(send, /* PaneSelected */Block.__(3, [pane]));
-                          }), /* array */[])));
+      return ReasonReact.element(/* None */0, /* None */0, ExecutionEnvironment.make(projectPath, (function (execute, output) {
+                        var match = state[/* activePane */3];
+                        return React.createElement("div", {
+                                    className: "app"
+                                  }, React.createElement("div", {
+                                        className: "main"
+                                      }, ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* code */0], /* Some */[/* RE */18355], /* None */0, /* None */0, /* None */0, /* Some */[(function (code) {
+                                                    return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
+                                                  })], /* array */[])), match !== -433646793 ? (
+                                          match !== 16617 ? Vrroom.nothing : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))
+                                        ) : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* console */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])), React.createElement("div", {
+                                            className: Curry._1(Vrroom.Helpers[/* ClassName */5][/* join */0], /* :: */[
+                                                  "dom",
+                                                  /* :: */[
+                                                    Curry._2(Vrroom.Helpers[/* ClassName */5][/* if_ */1], +(state[/* activePane */3] === /* Dom */3406434), "s-selected"),
+                                                    /* [] */0
+                                                  ]
+                                                ])
+                                          }, React.createElement("div", {
+                                                id: "dom-root"
+                                              })), React.createElement("div", {
+                                            className: Curry._1(Vrroom.Helpers[/* ClassName */5][/* join */0], /* :: */[
+                                                  "terminal",
+                                                  /* :: */[
+                                                    Curry._2(Vrroom.Helpers[/* ClassName */5][/* if_ */1], +(state[/* activePane */3] === /* Dom */3406434), "s-selected"),
+                                                    /* [] */0
+                                                  ]
+                                                ])
+                                          }, ReasonReact.element(/* None */0, /* None */0, Terminal.make(execute, output, /* array */[])))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make((function (param) {
+                                              return resetProject(execute, param);
+                                            }), state[/* activePane */3], (function (pane) {
+                                              return Curry._1(send, /* PaneSelected */Block.__(3, [pane]));
+                                            }), /* array */[])));
+                      })));
     });
   newrecord[/* initialState */10] = (function () {
       return /* record */[

@@ -106,32 +106,32 @@ html, body, #root {
 }
 
 
-.app > .output {
+.app > .main {
   display: flex;
   flex: 1;
 }
 
-.app > .output > * {
+.app > .main > * {
   width: 50%;
 }
-.app > .output > .react-codemirror2:first-child {
+.app > .main > .react-codemirror2:first-child {
   border-right: 1px solid var(--main-background-color);
 }
 
-.app > .output > .react-codemirror2 > .CodeMirror {
+.app > .main > .react-codemirror2 > .CodeMirror {
   min-height: 100%;
   font-family: var(--monospace-font-families);
   font-size: 13px;
 }
 
-.app > .output > .dom {
+.app > .main > .dom {
   display: none;
 }
 
-.app > .output > .dom.s-selected {
+.app > .main > .dom.s-selected {
   display: block;
 }
-.app > .output > .dom button {
+.app > .main > .dom button {
   color: var(--text-color);
   padding: .5em 1em;
   cursor: pointer;

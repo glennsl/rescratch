@@ -8,20 +8,20 @@ let projectPath = Node.Path.join2(Electron.Remote.App.getPath(`UserData), "curre
 let sourceFilename = Node.Path.join([| projectPath, "src", "main.re" |]);
 let jsFilename = Node.Path.join([| projectPath, "lib", "js", "src", "main.js" |]);
 
-let resetProject = () => {
+let resetProject = execute => () => {
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(
     ~src=Node.Path.join([| appRoot, "templates", "react" |]),
     ~dest=projectPath
   );
-  Node.Child_process.execSync("npm install", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
-  Node.Child_process.execSync("npm link bs-platform", Node.Child_process.option(~cwd=projectPath, ())) |> ignore;
+  execute("npm install");
+  execute("npm link bs-platform");
 };
 
 let getCode = () =>
   try (Node.Fs.readFileSync(sourceFilename, `utf8)) {
   | _ => {
-      resetProject();
+      /*resetProject();*/ /* TODO: loading needs to be done asynchronously */
       try (Node.Fs.readFileSync(sourceFilename, `utf8)) {
       | _ => {
           "Fatal error occurred reading curent project"
@@ -100,22 +100,29 @@ let make = _children => {
     },
 
   render: ({ state, send }) =>
-    <div className="app">
-      <div className="output">
-        <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
-        {switch (state.activePane) {
-        | `Js       => <Editor value=state.jsCode lang=`JS lineNumbers=false />
-        | `Console  => <Editor value=state.console lineNumbers=false />
-        | `Terminal => <Terminal dir=projectPath />
-        | `Dom      => nothing
-        }}
-        <div className=ClassName.(join(["dom", "s-selected" |> if_(state.activePane == `Dom)]))>
-          <div id="dom-root" />
+    <ExecutionEnvironment dir=projectPath>
+      ...((~execute, ~output) =>
+        <div className="app">
+          <div className="main">
+            <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
+            {switch (state.activePane) {
+            | `Js       => <Editor value=state.jsCode lang=`JS lineNumbers=false />
+            | `Console  => <Editor value=state.console lineNumbers=false />
+            | _         => nothing
+            }}
+            <div className=ClassName.(join(["dom", "s-selected" |> if_(state.activePane == `Dom)]))>
+              <div id="dom-root" />
+            </div>
+            <div className=ClassName.(join(["terminal", "s-selected" |> if_(state.activePane == `Dom)]))>
+              <Terminal onExecute=execute output=output />
+            </div>
+          </div>
+          <StatusBar
+              onReset       = resetProject(execute)
+              selectedPane  = state.activePane
+              onSelectPane  = (pane => send(PaneSelected(pane))) />
         </div>
-      </div>
-      <StatusBar
-          onReset       = resetProject
-          selectedPane  = state.activePane
-          onSelectPane  = (pane => send(PaneSelected(pane))) />
-    </div>
+      )
+    </ExecutionEnvironment>
+
 };

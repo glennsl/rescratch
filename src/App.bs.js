@@ -13,7 +13,6 @@ var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var Process = require("process");
 var Electron = require("./bindings/Electron.bs.js");
 var Terminal = require("./Terminal.bs.js");
-var FsExtra = require("fs-extra");
 var Js_option = require("bs-platform/lib/js/js_option.js");
 var StatusBar = require("./StatusBar.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
@@ -30,11 +29,14 @@ var sourceFilename = Path.join(projectPath, "src", "main.re");
 var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
 
 function resetProject(execute, callback, _) {
-  FsExtra.removeSync(projectPath);
-  FsExtra.copySync(Path.join(appRoot, "templates", "react"), projectPath);
-  return Curry._2(execute, "npm install", (function () {
-                return Curry._2(execute, "npm link bs-platform", (function () {
-                              return Curry._1(callback, /* () */0);
+  var templatePath = Path.join(appRoot, "templates", "react");
+  return Curry._2(execute, "rm -rf *", (function () {
+                return Curry._2(execute, "cp -R \"" + (String(templatePath) + ("/.\" \"" + (String(projectPath) + "\""))), (function () {
+                              return Curry._2(execute, "npm install", (function () {
+                                            return Curry._2(execute, "npm link bs-platform", (function () {
+                                                          return Curry._1(callback, /* () */0);
+                                                        }));
+                                          }));
                             }));
               }));
 }

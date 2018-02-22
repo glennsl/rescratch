@@ -9,13 +9,19 @@ let sourceFilename = Node.Path.join([| projectPath, "src", "main.re" |]);
 let jsFilename = Node.Path.join([| projectPath, "lib", "js", "src", "main.js" |]);
 
 let resetProject = (execute, callback) => () => {
+  /* TODO: Might want to use this instead for cross-platform support...
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(
     ~src=Node.Path.join([| appRoot, "templates", "react" |]),
     ~dest=projectPath
   );
+  */
+
+  let templatePath = Node.Path.join([| appRoot, "templates", "react" |]);
+  execute("rm -rf *", _code => 
+  execute({j|cp -R "$templatePath/." "$projectPath"|j}, _code => 
   execute("npm install", _code => 
-  execute("npm link bs-platform", _code => callback()));
+  execute("npm link bs-platform", _code => callback()))));
 };
 
 let getCode = () =>

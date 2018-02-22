@@ -8,14 +8,14 @@ let projectPath = Node.Path.join2(Electron.Remote.App.getPath(`UserData), "curre
 let sourceFilename = Node.Path.join([| projectPath, "src", "main.re" |]);
 let jsFilename = Node.Path.join([| projectPath, "lib", "js", "src", "main.js" |]);
 
-let resetProject = execute => () => {
+let resetProject = (execute, callback) => () => {
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(
     ~src=Node.Path.join([| appRoot, "templates", "react" |]),
     ~dest=projectPath
   );
-  execute("npm install");
-  execute("npm link bs-platform");
+  execute("npm install", _code => 
+  execute("npm link bs-platform", _code => callback()));
 };
 
 let getCode = () =>
@@ -118,7 +118,7 @@ let make = _children => {
             </div>
           </div>
           <StatusBar
-              onReset       = resetProject(execute)
+              onReset       = resetProject(execute, () => send(CodeChanged(getCode())))
               selectedPane  = state.activePane
               onSelectPane  = (pane => send(PaneSelected(pane))) />
         </div>

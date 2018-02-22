@@ -7,20 +7,17 @@ type state = {
 };
 
 type action =
-  | ExecuteCommand(string)
+  | ExecuteCommand(string, int => unit)
   | OutputChanged(string);
 
-let execute(send, cwd, command) {
-  try {
-    let process = NodeChildProcess.spawn(command, ~args=[||], ~options=NodeChildProcess.options(~cwd, ~shell=Js.true_, ()));
-    let stdout = process |> NodeChildProcess.stdout;
-    let stderr = process |> NodeChildProcess.stderr;
-    stdout |> NodeChildProcess.ReadableStream.onData(data => send(OutputChanged(data)));
-    stderr |> NodeChildProcess.ReadableStream.onData(data => send(OutputChanged(data)));
-  } {
-    | Js.Exn.Error(e) => send(OutputChanged(e |> Js.Exn.message |> Js.Option.getExn))
-    | e => send(OutputChanged("Error:\n" ++ Js.String.make(e)))
-  }
+let execute(send, cwd, command, callback) {
+  open NodeChildProcess;
+
+  let process = spawn(command, ~args=[||], ~options=options(~cwd, ~shell=Js.true_, ()));
+  process |> stdout |> ReadableStream.onData(data => send(OutputChanged(data)));
+  process |> stderr |> ReadableStream.onData(data => send(OutputChanged(data)));
+
+  process |> onExit((~code, ~signal) => callback(code))
 };
 
 let component = reducerComponent("Terminal");
@@ -32,13 +29,13 @@ let make = (~dir, render) => {
   },
   reducer: (action, state) =>
     switch action {
-    | ExecuteCommand(command) => UpdateWithSideEffects(
+    | ExecuteCommand(command, callback) => UpdateWithSideEffects(
         { output: state.output ++ "\n\n> " ++ command },
-        self => execute(self.send, dir, command)
+        self => execute(self.send, dir, command, callback)
       )
     | OutputChanged(output)   => Update({ ...state, output: state.output ++ "\n" ++ output})
     },
 
   render: ({ state, send }) =>
-    render(~execute=(command => send(ExecuteCommand(command))), ~output=state.output)
+    render(~execute=((command, callback) => send(ExecuteCommand(command, callback))), ~output=state.output)
 }

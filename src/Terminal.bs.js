@@ -43,7 +43,9 @@ function make(onExecute, output, _) {
         return /* UpdateWithSideEffects */Block.__(3, [
                   /* record */[/* command */""],
                   (function () {
-                      return Curry._1(onExecute, state[/* command */0]);
+                      return Curry._2(onExecute, state[/* command */0], (function () {
+                                    return /* () */0;
+                                  }));
                     })
                 ]);
       }

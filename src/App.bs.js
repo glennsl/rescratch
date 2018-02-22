@@ -29,11 +29,14 @@ var sourceFilename = Path.join(projectPath, "src", "main.re");
 
 var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
 
-function resetProject(execute, _) {
+function resetProject(execute, callback, _) {
   FsExtra.removeSync(projectPath);
   FsExtra.copySync(Path.join(appRoot, "templates", "react"), projectPath);
-  Curry._1(execute, "npm install");
-  return Curry._1(execute, "npm link bs-platform");
+  return Curry._2(execute, "npm install", (function () {
+                return Curry._2(execute, "npm link bs-platform", (function () {
+                              return Curry._1(callback, /* () */0);
+                            }));
+              }));
 }
 
 function getCode() {
@@ -113,7 +116,9 @@ function make() {
                                                   ]
                                                 ])
                                           }, ReasonReact.element(/* None */0, /* None */0, Terminal.make(execute, output, /* array */[])))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make((function (param) {
-                                              return resetProject(execute, param);
+                                              return resetProject(execute, (function () {
+                                                            return Curry._1(send, /* CodeChanged */Block.__(0, [getCode(/* () */0)]));
+                                                          }), param);
                                             }), state[/* activePane */3], (function (pane) {
                                               return Curry._1(send, /* PaneSelected */Block.__(3, [pane]));
                                             }), /* array */[])));

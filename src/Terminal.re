@@ -28,7 +28,7 @@ let make = (~onExecute, ~output, _:childless) => {
     | CommandChanged(command) => Update({ command: command })
     | ExecuteCurrentCommand => UpdateWithSideEffects(
         { command: "" },
-        _self => onExecute(state.command)
+        _self => onExecute(state.command, _code => ())
       )
     },
 

@@ -114,6 +114,11 @@ let make = _children => {
       Update({ ...state, activePane: pane })
     },
 
+  didMount: self => {
+    self.send(CodeChanged(getCode()));
+    NoUpdate
+  },
+
   render: ({ state, send }) =>
     <ExecutionEnvironment dir=projectPath>
       ...((~execute, ~output) =>

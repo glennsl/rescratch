@@ -86,6 +86,10 @@ var component = ReasonReact.reducerComponent("App");
 
 function make() {
   var newrecord = component.slice();
+  newrecord[/* didMount */4] = (function (self) {
+      Curry._1(self[/* send */4], /* CodeChanged */Block.__(0, [getCode(/* () */0)]));
+      return /* NoUpdate */0;
+    });
   newrecord[/* render */9] = (function (param) {
       var send = param[/* send */4];
       var state = param[/* state */2];

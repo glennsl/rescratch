@@ -127,7 +127,7 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
           <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
           {switch (state.activePane) {
           | `Js       => <Editor value=state.jsCode lang=`JS lineNumbers=false />
-          | `Console  => <Editor value=state.console lineNumbers=false />
+          | `Console  => <Console contents=state.console />
           | _         => nothing
           }}
           <div className=ClassName.(join(["dom", "s-selected" |> if_(state.activePane == `Dom)]))>

@@ -68,14 +68,13 @@ html, body, #root {
 }
 
 
-.c-statusbar {
-  display: flex;
+.c-console {
+  overflow: auto;
 
-  background: var(--main-background-color);
+  font-family: var(--monospace-font-families);
   font-size: 13px;
 }
-.c-statusbar > .separator {
-  flex: auto;
+.c-console > pre {
 }
 
 
@@ -108,6 +107,17 @@ html, body, #root {
 }
 
 
+.c-statusbar {
+  display: flex;
+
+  background: var(--main-background-color);
+  font-size: 13px;
+}
+.c-statusbar > .separator {
+  flex: auto;
+}
+
+
 .app {
   display: flex;
   flex-direction: column;
@@ -127,12 +137,17 @@ html, body, #root {
 .app > .main > .react-codemirror2:first-child {
   border-right: 1px solid var(--main-background-color);
 }
-
 .app > .main > .react-codemirror2 > .CodeMirror {
   min-height: 100%;
   font-family: var(--monospace-font-families);
   font-size: 13px;
 }
+
+
+.app > .main > .c-console {
+  min-height: 100%;
+}
+
 
 .app > .main > .dom {
   display: none;

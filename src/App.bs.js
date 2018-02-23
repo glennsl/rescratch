@@ -10,6 +10,7 @@ var React = require("react");
 var Editor = require("./Editor.bs.js");
 var Js_exn = require("bs-platform/lib/js/js_exn.js");
 var Vrroom = require("vrroom/src/Vrroom.bs.js");
+var Console = require("./Console.bs.js");
 var Process = require("process");
 var Terminal = require("./Terminal.bs.js");
 var Js_option = require("bs-platform/lib/js/js_option.js");
@@ -105,7 +106,7 @@ function make(projectPath, execute, output, _) {
                                   return Curry._1(send, /* CodeChanged */Block.__(0, [code]));
                                 })], /* array */[])), match !== -433646793 ? (
                         match !== 16617 ? Vrroom.nothing : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* jsCode */1], /* Some */[/* JS */16585], /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[]))
-                      ) : ReasonReact.element(/* None */0, /* None */0, Editor.make(state[/* console */2], /* None */0, /* None */0, /* Some */[/* false */0], /* None */0, /* None */0, /* array */[])), React.createElement("div", {
+                      ) : ReasonReact.element(/* None */0, /* None */0, Console.make(state[/* console */2], /* array */[])), React.createElement("div", {
                           className: Curry._1(Vrroom.Helpers[/* ClassName */5][/* join */0], /* :: */[
                                 "dom",
                                 /* :: */[

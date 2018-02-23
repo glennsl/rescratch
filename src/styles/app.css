@@ -99,6 +99,7 @@ html, body, #root {
 
   font-family: var(--monospace-font-families);
   font-size: 13px;
+  padding: .5em 1em;
 }
 .c-console > pre {
 }

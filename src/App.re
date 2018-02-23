@@ -138,6 +138,7 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
           </div>
         </div>
         <StatusBar
+            projectPath
             templates         = ["default", "json", "react"]
             onSelectTemplate  = (template => send(TemplateSelected(template)))
             selectedPane      = state.activePane

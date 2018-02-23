@@ -18,7 +18,9 @@ html, body, #root {
 }
 
 
-.c-button, .c-select-button button {
+.c-button,
+.c-select-button button,
+.c-dependency-list button {
   color: var(--text-color);
   padding: .5em 1em;
   cursor: pointer;
@@ -34,7 +36,9 @@ html, body, #root {
   width: 16px;
   height: 16px;
 }
-.c-button:hover, .c-select-button button:hover {
+.c-button:hover,
+.c-select-button button:hover,
+.c-dependency-list button:hover {
   background: var(--highlight-overlay-color);
 }
 
@@ -64,6 +68,28 @@ html, body, #root {
   right: 0;
 }
 .c-select-button.s-open menu {
+  display: block;
+}
+
+
+.c-dependency-list {
+  display: inline-block;
+  position: relative;
+}
+.c-dependency-list ul {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  z-index: 100;
+  transform: translateX(-2);
+  background: var(--dark-background-color);
+  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.25);
+}
+.c-dependency-list ul > li {
+  padding: 1em;
+  white-space: nowrap;
+}
+.c-dependency-list.s-open ul {
   display: block;
 }
 

@@ -14,7 +14,7 @@ module PaneSelectButton = SelectButton.Make({
 });
 
 let component = ReasonReact.statelessComponent("Toolbar");
-let make = (~templates, ~onSelectTemplate, ~selectedPane, ~onSelectPane, _:childless) => {
+let make = (~projectPath, ~templates, ~onSelectTemplate, ~selectedPane, ~onSelectPane, _:childless) => {
   ...component,
   render: _self =>
     <div className="c-statusbar">
@@ -25,6 +25,8 @@ let make = (~templates, ~onSelectTemplate, ~selectedPane, ~onSelectPane, _:child
           renderButtonLabel = (_item => "Load" |> text)
           onSelect          = onSelectTemplate
         />
+
+      <DependencyList projectPath />
 
       <div className="separator" />
 

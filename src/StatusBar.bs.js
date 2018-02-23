@@ -6,6 +6,7 @@ var React = require("react");
 var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var SelectButton = require("./common/SelectButton.bs.js");
+var DependencyList = require("./DependencyList.bs.js");
 
 var TemplateSelectButton = SelectButton.Make(/* module */[]);
 
@@ -13,7 +14,7 @@ var PaneSelectButton = SelectButton.Make(/* module */[]);
 
 var component = ReasonReact.statelessComponent("Toolbar");
 
-function make(templates, onSelectTemplate, selectedPane, onSelectPane, _) {
+function make(projectPath, templates, onSelectTemplate, selectedPane, onSelectPane, _) {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function () {
       return React.createElement("div", {
@@ -25,7 +26,7 @@ function make(templates, onSelectTemplate, selectedPane, onSelectPane, _) {
                                       ];
                               }), templates), "default", /* None */0, /* Some */[(function () {
                               return Vrroom.text("Load");
-                            })], /* None */0, /* None */0, onSelectTemplate, /* array */[])), React.createElement("div", {
+                            })], /* None */0, /* None */0, onSelectTemplate, /* array */[])), ReasonReact.element(/* None */0, /* None */0, DependencyList.make(projectPath, /* array */[])), React.createElement("div", {
                       className: "separator"
                     }), ReasonReact.element(/* None */0, /* None */0, Curry._8(PaneSelectButton[/* make */1], /* :: */[
                           /* record */[

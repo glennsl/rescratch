@@ -124,7 +124,7 @@ function make(projectPath, execute, output, _) {
                                   /* [] */0
                                 ]
                               ])
-                        }, ReasonReact.element(/* None */0, /* None */0, Terminal.make(execute, output, /* array */[])))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(/* :: */[
+                        }, ReasonReact.element(/* None */0, /* None */0, Terminal.make(execute, output, /* array */[])))), ReasonReact.element(/* None */0, /* None */0, StatusBar.make(projectPath, /* :: */[
                           "default",
                           /* :: */[
                             "json",

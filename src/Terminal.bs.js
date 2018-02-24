@@ -3,9 +3,9 @@
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
-var Editor = require("./Editor.bs.js");
 var Vrroom = require("vrroom/src/Vrroom.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
+var ScrollToBottom = require("./common/ScrollToBottom.bs.js");
 
 function handleKeyDown(send, e) {
   if (e.keyCode === 13) {
@@ -23,7 +23,11 @@ function make(onExecute, output, _) {
       var send = param[/* send */4];
       return React.createElement("div", {
                   className: "c-terminal"
-                }, ReasonReact.element(/* None */0, /* None */0, Editor.make(output, /* None */0, /* None */0, /* Some */[/* false */0], /* Some */[/* true */1], /* None */0, /* array */[])), React.createElement("div", {
+                }, ReasonReact.element(/* None */0, /* None */0, ScrollToBottom.make((function (scrollRef) {
+                            return React.createElement("pre", {
+                                        ref: scrollRef
+                                      }, Vrroom.text(output));
+                          }))), React.createElement("div", {
                       className: "command-line"
                     }, React.createElement("span", {
                           className: "prompt"

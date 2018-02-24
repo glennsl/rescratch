@@ -96,12 +96,12 @@ html, body, #root {
 
 .c-console {
   overflow: auto;
+  min-height: 100%;
+  box-sizing: border-box;
 
   font-family: var(--monospace-font-families);
   font-size: 13px;
   padding: .5em 1em;
-}
-.c-console > pre {
 }
 
 
@@ -112,12 +112,15 @@ html, body, #root {
   height: 100%;
   background: var(--panel-background-color);
 }
-.c-terminal > .react-codemirror2 {
-}
-.c-terminal > .react-codemirror2 > .CodeMirror {
-  height: auto;
+.c-terminal > pre {
+  overflow: auto;
+
+  font-family: var(--monospace-font-families);
+  font-size: 13px;
+  padding: .5em 1em;
 }
 .c-terminal > .command-line {
+  flex: 0 0 auto;
   display: flex;
   align-items: baseline;
   padding: .5em;
@@ -168,11 +171,6 @@ html, body, #root {
   min-height: 100%;
   font-family: var(--monospace-font-families);
   font-size: 13px;
-}
-
-
-.app > .main > .c-console {
-  min-height: 100%;
 }
 
 

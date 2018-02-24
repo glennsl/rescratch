@@ -35,9 +35,13 @@ let make = (~onExecute, ~output, _:childless) => {
   render: ({ state, send}) =>
     <div className="c-terminal">
 
-      <Editor value       = output
-              readOnly    = true
-              lineNumbers = false />
+      <ScrollToBottom>
+        ...((~scrollRef) =>
+          <pre ref=scrollRef>
+            {output |> text}
+          </pre>
+        )
+      </ScrollToBottom>
 
       <div className="command-line">
         <span className="prompt"> {">" |> text} </span>

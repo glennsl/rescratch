@@ -12,6 +12,7 @@
   "devDependencies": {
     "@glennsl/bs-json": "^1.1.2",
     "@glennsl/rebase": "^0.2.0",
+    "ansi_up": "^2.0.2",
     "bs-material-ui-icons": "^0.1.5",
     "bs-platform": "^2.2.1",
     "codemirror": "^5.34.0",
@@ -28,5 +29,6 @@
     "vm2": "^3.5.2",
     "vrroom": "github:glennsl/vrroom#691ea02b676675c7826a76ff7586ad442875dfa4"
   },
-  "dependencies": {}
+  "dependencies": {
+  }
 }

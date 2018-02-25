@@ -25,8 +25,11 @@ function make(onExecute, output, _) {
                   className: "c-terminal"
                 }, ReasonReact.element(/* None */0, /* None */0, ScrollToBottom.make((function (scrollRef) {
                             return React.createElement("pre", {
-                                        ref: scrollRef
-                                      }, Vrroom.text(output));
+                                        ref: scrollRef,
+                                        dangerouslySetInnerHTML: {
+                                          __html: output
+                                        }
+                                      });
                           }))), React.createElement("div", {
                       className: "command-line"
                     }, React.createElement("span", {

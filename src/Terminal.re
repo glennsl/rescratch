@@ -32,14 +32,12 @@ let make = (~onExecute, ~output, _:childless) => {
       )
     },
 
-  render: ({ state, send}) =>
+  render: ({ state, send }) =>
     <div className="c-terminal">
 
       <ScrollToBottom>
         ...((~scrollRef) =>
-          <pre ref=scrollRef>
-            {output |> text}
-          </pre>
+          <pre ref=scrollRef dangerouslySetInnerHTML={ "__html": output } />
         )
       </ScrollToBottom>
 

@@ -1,6 +1,9 @@
-open Rebase;
+open! Rebase;
 open ReasonReact;
-open Vrroom;
+open! Vrroom;
+
+let au = AnsiUp.make();
+AnsiUp.use_classes(au, Js.true_);
 
 type state = {
   output: string
@@ -33,7 +36,7 @@ let make = (~dir, render) => {
         { output: state.output ++ "\n\n> " ++ command },
         self => execute(self.send, dir, command, callback)
       )
-    | OutputChanged(output)   => Update({ ...state, output: state.output ++ "\n" ++ output})
+    | OutputChanged(output)   => Update({ output: state.output ++ "\n" ++ AnsiUp.ansi_to_html(output, au) })
     },
 
   render: ({ state, send }) =>

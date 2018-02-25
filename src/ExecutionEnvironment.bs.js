@@ -2,8 +2,13 @@
 
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
+var Ansi_up = require("ansi_up");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Child_process = require("child_process");
+
+var au = new Ansi_up.default();
+
+au.use_classes = true;
 
 function execute(send, cwd, command, callback) {
   var $$process = Child_process.spawn(command, /* array */[], {
@@ -40,7 +45,7 @@ function make(dir, render) {
     });
   newrecord[/* reducer */12] = (function (action, state) {
       if (action.tag) {
-        return /* Update */Block.__(0, [/* record */[/* output */state[/* output */0] + ("\n" + action[0])]]);
+        return /* Update */Block.__(0, [/* record */[/* output */state[/* output */0] + ("\n" + au.ansi_to_html(action[0]))]]);
       } else {
         var callback = action[1];
         var command = action[0];
@@ -55,7 +60,8 @@ function make(dir, render) {
   return newrecord;
 }
 
+exports.au = au;
 exports.execute = execute;
 exports.component = component;
 exports.make = make;
-/* component Not a pure module */
+/* au Not a pure module */

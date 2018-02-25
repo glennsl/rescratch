@@ -18,6 +18,38 @@ html, body, #root {
 }
 
 
+::-webkit-scrollbar {
+  background: transparent;
+}
+::-webkit-scrollbar:vertical {
+  width: 6px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+::-webkit-scrollbar-track  {
+  background: transparent;
+}
+::-webkit-scrollbar-track-piece {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-resizer {
+  background: transparent;
+}
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  background: transparent;
+}
+
+
 .c-button,
 .c-select-button button,
 .c-dependency-list button {

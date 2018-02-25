@@ -12,8 +12,6 @@ var Js_undefined = require("bs-platform/lib/js/js_undefined.js");
 
 ((require('codemirror/mode/mllike/mllike')));
 
-((require('codemirror/addon/scroll/simplescrollbars.js')));
-
 function _langToMode(param) {
   if (param !== 17247) {
     if (param >= 18355) {
@@ -37,8 +35,7 @@ function make(value, lang, defaultValue, $staropt$star, $staropt$star$1, onChang
                         mode: Js_undefined.fromOption(Rebase.Option[/* map */0](_langToMode, lang)),
                         theme: "material",
                         lineNumbers: lineNumbers,
-                        readOnly: Js_boolean.to_js_boolean(readOnly),
-                        scrollbarStyle: "simple"
+                        readOnly: Js_boolean.to_js_boolean(readOnly)
                       }], /* array */[]));
     });
   return newrecord;

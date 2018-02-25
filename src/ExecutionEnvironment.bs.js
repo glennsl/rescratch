@@ -16,10 +16,10 @@ function execute(send, cwd, command, callback) {
         shell: true
       });
   $$process.stdout.on("data", (function (data) {
-          return Curry._1(send, /* OutputChanged */Block.__(1, [data]));
+          return Curry._1(send, /* StdOut */Block.__(1, [data]));
         }));
   $$process.stderr.on("data", (function (data) {
-          return Curry._1(send, /* OutputChanged */Block.__(1, [data]));
+          return Curry._1(send, /* StdErr */Block.__(2, [data]));
         }));
   $$process.on("exit", (function (code, _) {
           return Curry._1(callback, code);
@@ -44,17 +44,21 @@ function make(dir, render) {
       return /* record */[/* output */""];
     });
   newrecord[/* reducer */12] = (function (action, state) {
-      if (action.tag) {
-        return /* Update */Block.__(0, [/* record */[/* output */state[/* output */0] + ("\n" + au.ansi_to_html(action[0]))]]);
-      } else {
-        var callback = action[1];
-        var command = action[0];
-        return /* UpdateWithSideEffects */Block.__(3, [
-                  /* record */[/* output */state[/* output */0] + ("\n\n> " + command)],
-                  (function (self) {
-                      return execute(self[/* send */4], dir, command, callback);
-                    })
-                ]);
+      switch (action.tag | 0) {
+        case 0 : 
+            var callback = action[1];
+            var command = action[0];
+            return /* UpdateWithSideEffects */Block.__(3, [
+                      /* record */[/* output */state[/* output */0] + ("\n> " + (command + "\n"))],
+                      (function (self) {
+                          return execute(self[/* send */4], dir, command, callback);
+                        })
+                    ]);
+        case 1 : 
+            return /* Update */Block.__(0, [/* record */[/* output */state[/* output */0] + ("<div class=\"stdout\">" + (au.ansi_to_html(action[0]) + "</div>"))]]);
+        case 2 : 
+            return /* Update */Block.__(0, [/* record */[/* output */state[/* output */0] + ("<div class=\"stderr\">" + (au.ansi_to_html(action[0]) + "</div>"))]]);
+        
       }
     });
   return newrecord;

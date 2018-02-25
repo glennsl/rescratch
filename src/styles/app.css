@@ -151,7 +151,7 @@ html, body, #root {
   font-family: var(--monospace-font-families);
   font-size: 13px;
   padding: .5em 1em;
-  color #a1b0b8
+  color: #a1b0b8
 }
 .c-terminal > .command-line {
   flex: 0 0 auto;
@@ -164,12 +164,22 @@ html, body, #root {
 .c-terminal > .command-line > .prompt {
   display: inline-block;
   padding-right: .5em;
-  color #a1b0b8
+  color: #a1b0b8
 }
 .c-terminal > .command-line > input {
   width: 100%;
   color: var(--text-color);
-  color #a1b0b8
+  color: #a1b0b8
+}
+.c-terminal .stderr {
+  position: relative;
+}
+.c-terminal .stderr:before {
+  position: absolute;
+  height: 100%;
+  content: "";
+  border-left: 2px solid #ff5252;
+  transform: translateX(-1em);
 }
 
 /* From https://github.com/carloscuesta/materialshell */

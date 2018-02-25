@@ -11,14 +11,15 @@ type state = {
 
 type action =
   | ExecuteCommand(string, int => unit)
-  | OutputChanged(string);
+  | StdOut(string)
+  | StdErr(string);
 
 let execute(send, cwd, command, callback) {
   open NodeChildProcess;
 
   let process = spawn(command, ~args=[||], ~options=options(~cwd, ~shell=Js.true_, ()));
-  process |> stdout |> ReadableStream.onData(data => send(OutputChanged(data)));
-  process |> stderr |> ReadableStream.onData(data => send(OutputChanged(data)));
+  process |> stdout |> ReadableStream.onData(data => send(StdOut(data)));
+  process |> stderr |> ReadableStream.onData(data => send(StdErr(data)));
 
   process |> onExit((~code, ~signal) => callback(code))
 };
@@ -33,10 +34,11 @@ let make = (~dir, render) => {
   reducer: (action, state) =>
     switch action {
     | ExecuteCommand(command, callback) => UpdateWithSideEffects(
-        { output: state.output ++ "\n\n> " ++ command },
+        { output: state.output ++ "\n> " ++ command ++ "\n" },
         self => execute(self.send, dir, command, callback)
       )
-    | OutputChanged(output)   => Update({ output: state.output ++ "\n" ++ AnsiUp.ansi_to_html(output, au) })
+    | StdOut(output)   => Update({ output: state.output ++ "<div class=\"stdout\">" ++ AnsiUp.ansi_to_html(output, au) ++ "</div>" })
+    | StdErr(output)   => Update({ output: state.output ++ "<div class=\"stderr\">" ++ AnsiUp.ansi_to_html(output, au) ++ "</div>" })
     },
 
   render: ({ state, send }) =>

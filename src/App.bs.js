@@ -27,7 +27,7 @@ function make(projectPath, execute, output, _) {
   var jsFilename = Path.join(projectPath, "lib", "js", "src", "main.js");
   var loadTemplate = function (template, callback) {
     var templatePath = Path.join(appRoot, "templates", template);
-    return Curry._2(execute, "rm -rf *", (function () {
+    return Curry._2(execute, "rm -rf \"" + (String(projectPath) + "/*\""), (function () {
                   return Curry._2(execute, "cp -R \"" + (String(templatePath) + ("/.\" \"" + (String(projectPath) + "\""))), (function () {
                                 return Curry._2(execute, "npm install", (function () {
                                               return Curry._2(execute, "npm link bs-platform", (function () {

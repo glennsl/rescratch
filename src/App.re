@@ -34,7 +34,7 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
     */
 
     let templatePath = Node.Path.join([| appRoot, "templates", template |]);
-    execute("rm -rf *", _code => 
+    execute({j|rm -rf "$projectPath/*"|j}, _code => 
     execute({j|cp -R "$templatePath/." "$projectPath"|j}, _code => 
     execute("npm install", _code => 
     execute("npm link bs-platform", _code => callback()))));

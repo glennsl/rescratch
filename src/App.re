@@ -21,6 +21,7 @@ type action =
   | ConsoleChanged(string)
   | CompileCompleted(string)
   | TemplateSelected(string)
+  | TemplateLoaded(string)
   | PaneSelected(pane)
   | PaneUpdated(pane);
 
@@ -76,7 +77,7 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
   let persistAndCompile = Utils.debounce(((code, return)) => {
     persist(code);
     compile(return);
-  }, 600);
+  }, 400);
 
   {
     ...component,
@@ -120,7 +121,12 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
       | TemplateSelected(template) =>
         UpdateWithSideEffects(
           { ...state, activePane: `Terminal },
-          self => loadTemplate(template, () => getCode(code => self.send(CodeChanged(code))))
+          self => loadTemplate(template, () => getCode(code => self.send(TemplateLoaded(code))))
+        )
+      | TemplateLoaded(code) =>
+        UpdateWithSideEffects(
+          { ...state, code },
+          ({ send }) => compile(result => send(CompileCompleted(result)))
         )
         
 

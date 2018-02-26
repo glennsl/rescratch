@@ -4,17 +4,17 @@ module TemplateSelectButton = SelectButton.Make({
   type value = string
 });
 
-module PaneSelectButton = SelectButton.Make({
-  type value = [
-    | `Js
-    | `Console
-    | `Dom
-    | `Terminal
-  ]
-});
-
 let component = ReasonReact.statelessComponent("Toolbar");
-let make = (~projectPath, ~templates, ~onSelectTemplate, ~selectedPane, ~onSelectPane, _:childless) => {
+let make = (
+    ~projectPath,
+    ~templates,
+    ~consoleUpdated,
+    ~domUpdated,
+    ~terminalUpdated,
+    ~onSelectTemplate,
+    ~selectedPane,
+    ~onSelectPane,
+    _:childless) => {
   ...component,
   render: _self =>
     <div className="c-statusbar">
@@ -30,23 +30,39 @@ let make = (~projectPath, ~templates, ~onSelectTemplate, ~selectedPane, ~onSelec
 
       <div className="separator" />
 
-      <PaneSelectButton
-          items = [{
-              label: "JavaScript",
-              value: `Js
-            }, {
-              label: "Console",
-              value: `Console
-            }, {
-              label: "DOM",
-              value: `Dom
-            }, {
-              label: "Terminal",
-              value: `Terminal
-            }]
-          selected = selectedPane
-          onSelect = onSelectPane
-          align    = `Right
+      <Button
+          label="JavaScript"
+          className=ClassName.(join([
+            "s-selected" |> if_(selectedPane == `Js),
+          ]))
+          onClick=(_e => onSelectPane(`Js))
+        />
+
+      <Button
+          label="Console"
+          className=ClassName.(join([
+            "s-selected" |> if_(selectedPane == `Console),
+            "s-updated" |> if_(consoleUpdated),
+          ]))
+          onClick=(_e => onSelectPane(`Console))
+        />
+
+      <Button
+          label="Dom"
+          className=ClassName.(join([
+            "s-selected" |> if_(selectedPane == `Dom),
+            "s-updated" |> if_(domUpdated),
+          ]))
+          onClick=(_e => onSelectPane(`Dom))
+        />
+
+      <Button
+          label="Terminal"
+          className=ClassName.(join([
+            "s-selected" |> if_(selectedPane == `Terminal),
+            "s-updated" |> if_(terminalUpdated),
+          ]))
+          onClick=(_e => onSelectPane(`Terminal))
         />
 
     </div>

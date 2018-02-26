@@ -16,6 +16,7 @@ var Terminal = require("./Terminal.bs.js");
 var Js_option = require("bs-platform/lib/js/js_option.js");
 var StatusBar = require("./StatusBar.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
+var DomContainer = require("./DomContainer.bs.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
 
 var appRoot = Process.cwd();
@@ -114,9 +115,9 @@ function make(projectPath, execute, output, _) {
                                   /* [] */0
                                 ]
                               ])
-                        }, React.createElement("div", {
-                              id: "dom-root"
-                            })), React.createElement("div", {
+                        }, ReasonReact.element(/* None */0, /* None */0, DomContainer.make((function () {
+                                    return Curry._1(send, /* PaneUpdated */Block.__(5, [/* Dom */3406434]));
+                                  }), /* array */[]))), React.createElement("div", {
                           className: Curry._1(Vrroom.Helpers[/* ClassName */5][/* join */0], /* :: */[
                                 "terminal",
                                 /* :: */[
@@ -133,7 +134,7 @@ function make(projectPath, execute, output, _) {
                               /* [] */0
                             ]
                           ]
-                        ], (function (template) {
+                        ], state[/* consoleUpdated */4], state[/* domUpdated */5], state[/* terminalUpdated */6], (function (template) {
                             return Curry._1(send, /* TemplateSelected */Block.__(3, [template]));
                           }), state[/* activePane */3], (function (pane) {
                             return Curry._1(send, /* PaneSelected */Block.__(4, [pane]));
@@ -144,20 +145,19 @@ function make(projectPath, execute, output, _) {
               /* code */"",
               /* jsCode */"",
               /* console */"",
-              /* activePane : Console */-433646793
+              /* activePane : Console */-433646793,
+              /* consoleUpdated : false */0,
+              /* domUpdated : false */0,
+              /* terminalUpdated : false */0
             ];
     });
   newrecord[/* reducer */12] = (function (action, state) {
       switch (action.tag | 0) {
         case 0 : 
             var code = action[0];
+            var newrecord = state.slice();
             return /* UpdateWithSideEffects */Block.__(3, [
-                      /* record */[
-                        /* code */code,
-                        /* jsCode */state[/* jsCode */1],
-                        /* console */state[/* console */2],
-                        /* activePane */state[/* activePane */3]
-                      ],
+                      (newrecord[/* code */0] = code, newrecord),
                       (function (param) {
                           var send = param[/* send */4];
                           return Curry._1(persistAndCompile, /* tuple */[
@@ -169,12 +169,13 @@ function make(projectPath, execute, output, _) {
                         })
                     ]);
         case 1 : 
-            return /* Update */Block.__(0, [/* record */[
-                        /* code */state[/* code */0],
-                        /* jsCode */state[/* jsCode */1],
-                        /* console */state[/* console */2] + ("\n" + action[0]),
-                        /* activePane : Console */-433646793
-                      ]]);
+            var newrecord$1 = state.slice();
+            return /* UpdateWithSideEffects */Block.__(3, [
+                      (newrecord$1[/* console */2] = state[/* console */2] + ("\n" + action[0]), newrecord$1),
+                      (function (self) {
+                          return Curry._1(self[/* send */4], /* PaneUpdated */Block.__(5, [/* Console */-433646793]));
+                        })
+                    ]);
         case 2 : 
             var jsCode = action[0];
             return /* UpdateWithSideEffects */Block.__(3, [
@@ -182,7 +183,10 @@ function make(projectPath, execute, output, _) {
                         /* code */state[/* code */0],
                         /* jsCode */jsCode,
                         /* console */"",
-                        /* activePane : Dom */3406434
+                        /* activePane */state[/* activePane */3],
+                        /* consoleUpdated */state[/* consoleUpdated */4],
+                        /* domUpdated */state[/* domUpdated */5],
+                        /* terminalUpdated */state[/* terminalUpdated */6]
                       ],
                       (function (param) {
                           var send = param[/* send */4];
@@ -203,13 +207,9 @@ function make(projectPath, execute, output, _) {
                     ]);
         case 3 : 
             var template = action[0];
+            var newrecord$2 = state.slice();
             return /* UpdateWithSideEffects */Block.__(3, [
-                      /* record */[
-                        /* code */state[/* code */0],
-                        /* jsCode */state[/* jsCode */1],
-                        /* console */state[/* console */2],
-                        /* activePane : Terminal */-912466532
-                      ],
+                      (newrecord$2[/* activePane */3] = /* Terminal */-912466532, newrecord$2),
                       (function (self) {
                           return loadTemplate(template, (function () {
                                         return getCode((function (code) {
@@ -219,12 +219,63 @@ function make(projectPath, execute, output, _) {
                         })
                     ]);
         case 4 : 
-            return /* Update */Block.__(0, [/* record */[
-                        /* code */state[/* code */0],
-                        /* jsCode */state[/* jsCode */1],
-                        /* console */state[/* console */2],
-                        /* activePane */action[0]
-                      ]]);
+            var pane = action[0];
+            if (pane >= 16617) {
+              if (pane >= 3406434) {
+                return /* Update */Block.__(0, [/* record */[
+                            /* code */state[/* code */0],
+                            /* jsCode */state[/* jsCode */1],
+                            /* console */state[/* console */2],
+                            /* activePane */pane,
+                            /* consoleUpdated */state[/* consoleUpdated */4],
+                            /* domUpdated : false */0,
+                            /* terminalUpdated */state[/* terminalUpdated */6]
+                          ]]);
+              } else {
+                var newrecord$3 = state.slice();
+                return /* Update */Block.__(0, [(newrecord$3[/* activePane */3] = pane, newrecord$3)]);
+              }
+            } else if (pane >= -433646793) {
+              return /* Update */Block.__(0, [/* record */[
+                          /* code */state[/* code */0],
+                          /* jsCode */state[/* jsCode */1],
+                          /* console */state[/* console */2],
+                          /* activePane */pane,
+                          /* consoleUpdated : false */0,
+                          /* domUpdated */state[/* domUpdated */5],
+                          /* terminalUpdated */state[/* terminalUpdated */6]
+                        ]]);
+            } else {
+              return /* Update */Block.__(0, [/* record */[
+                          /* code */state[/* code */0],
+                          /* jsCode */state[/* jsCode */1],
+                          /* console */state[/* console */2],
+                          /* activePane */pane,
+                          /* consoleUpdated */state[/* consoleUpdated */4],
+                          /* domUpdated */state[/* domUpdated */5],
+                          /* terminalUpdated : false */0
+                        ]]);
+            }
+            break;
+        case 5 : 
+            var pane$1 = action[0];
+            if (pane$1 === state[/* activePane */3]) {
+              return /* NoUpdate */0;
+            } else if (pane$1 >= 16617) {
+              if (pane$1 >= 3406434) {
+                var newrecord$4 = state.slice();
+                return /* Update */Block.__(0, [(newrecord$4[/* domUpdated */5] = /* true */1, newrecord$4)]);
+              } else {
+                return /* NoUpdate */0;
+              }
+            } else if (pane$1 >= -433646793) {
+              var newrecord$5 = state.slice();
+              return /* Update */Block.__(0, [(newrecord$5[/* consoleUpdated */4] = /* true */1, newrecord$5)]);
+            } else {
+              var newrecord$6 = state.slice();
+              return /* Update */Block.__(0, [(newrecord$6[/* terminalUpdated */6] = /* true */1, newrecord$6)]);
+            }
+            break;
         
       }
     });

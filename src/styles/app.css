@@ -69,6 +69,10 @@ html, body, #root {
   width: 16px;
   height: 16px;
 }
+.c-button.s-updated {
+  color: #b6d1aa;
+}
+.c-button.s-selected,
 .c-button:hover,
 .c-select-button button:hover,
 .c-dependency-list button:hover {

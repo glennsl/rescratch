@@ -4,11 +4,16 @@ open! Vrroom;
 
 let appRoot = Node.Process.cwd(); /* TODO: Use getAppPath() in prod */
 
+type pane = [`Js | `Console | `Dom | `Terminal];
+
 type state = {
   code: string,
   jsCode: string,
   console: string,
-  activePane: [`Js | `Console | `Dom | `Terminal]
+  activePane: pane,
+  consoleUpdated: bool,
+  domUpdated: bool,
+  terminalUpdated: bool
 };
 
 type action =
@@ -16,7 +21,8 @@ type action =
   | ConsoleChanged(string)
   | CompileCompleted(string)
   | TemplateSelected(string)
-  | PaneSelected([`Js | `Console | `Dom | `Terminal]);
+  | PaneSelected(pane)
+  | PaneUpdated(pane);
 
 let component = reducerComponent("App");
 let make = (~projectPath, ~execute, ~output, _:childless) => {
@@ -79,7 +85,10 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
       code: "",
       jsCode: "",
       console: "",
-      activePane: `Console
+      activePane: `Console,
+      consoleUpdated: false,
+      domUpdated: false,
+      terminalUpdated: false
     },
     reducer: (action, state) =>
       switch action {
@@ -90,11 +99,14 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
         )
 
       | ConsoleChanged(value) =>
-        Update({ ...state, activePane: `Console, console: state.console ++ "\n" ++ value })
+        UpdateWithSideEffects(
+          { ...state, console: state.console ++ "\n" ++ value },
+          self => self.send(PaneUpdated(`Console))
+        )
 
       | CompileCompleted(jsCode) =>
         UpdateWithSideEffects(
-          { ...state, jsCode, activePane: `Dom, console: "" },
+          { ...state, jsCode, console: "" },
           ({ state, send }) => {
             try {
               let vm = VM2.makeVM(~console=`Redirect, ~requireExternal=`Allow, ~sandbox=Js.Obj.empty());
@@ -113,7 +125,24 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
         
 
       | PaneSelected(pane) =>
-        Update({ ...state, activePane: pane })
+        switch pane {
+        | `Js       => Update({ ...state, activePane: pane })
+        | `Console  => Update({ ...state, activePane: pane, consoleUpdated: false })
+        | `Dom      => Update({ ...state, activePane: pane, domUpdated: false })
+        | `Terminal => Update({ ...state, activePane: pane, terminalUpdated: false })
+        }
+
+      | PaneUpdated(pane) =>
+        if (pane === state.activePane) {
+          NoUpdate
+        } else {
+          switch pane {
+          | `Js       => NoUpdate
+          | `Console  => Update({ ...state, consoleUpdated: true })
+          | `Dom      => Update({ ...state, domUpdated: true })
+          | `Terminal => Update({ ...state, terminalUpdated: true })
+          }
+        }
       },
 
     didMount: self => {
@@ -123,6 +152,7 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
 
     render: ({ state, send }) =>
       <div className="app">
+
         <div className="main">
           <Editor value=state.code onChange=(code => send(CodeChanged(code))) lang=`RE />
           {switch (state.activePane) {
@@ -130,15 +160,21 @@ let make = (~projectPath, ~execute, ~output, _:childless) => {
           | `Console  => <Console contents=state.console />
           | _         => nothing
           }}
+
           <div className=ClassName.(join(["dom", "s-selected" |> if_(state.activePane == `Dom)]))>
-            <div id="dom-root" />
+            <DomContainer onUpdate=(() => send(PaneUpdated(`Dom))) />
           </div>
+
           <div className=ClassName.(join(["terminal", "s-selected" |> if_(state.activePane == `Terminal)]))>
             <Terminal onExecute=execute output=output />
           </div>
         </div>
+
         <StatusBar
             projectPath
+            consoleUpdated    = state.consoleUpdated
+            domUpdated        = state.domUpdated
+            terminalUpdated   = state.terminalUpdated
             templates         = ["default", "json", "react"]
             onSelectTemplate  = (template => send(TemplateSelected(template)))
             selectedPane      = state.activePane
